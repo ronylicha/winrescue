@@ -37,6 +37,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.stringResource
+import com.winrescue.R
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,7 +71,8 @@ fun SettingsScreen(
         onStepDelayChanged = { viewModel.updateStepDelay(it) },
         onPreviewBeforeSendChanged = { viewModel.updatePreviewBeforeSend(it) },
         onDebugModeChanged = { viewModel.updateDebugMode(it) },
-        onTestHidConnection = { viewModel.testHidConnection() }
+        onTestHidConnection = { viewModel.testHidConnection() },
+        onLanguageSelected = { viewModel.updateLanguage(it) }
     )
 }
 
@@ -86,6 +89,7 @@ private fun SettingsScreenContent(
     onPreviewBeforeSendChanged: (Boolean) -> Unit,
     onDebugModeChanged: (Boolean) -> Unit,
     onTestHidConnection: () -> Unit,
+    onLanguageSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -324,9 +328,63 @@ private fun SettingsScreenContent(
                 SectionDivider()
             }
 
+            // ---- Section Langue ----
+            item {
+                SectionHeader(title = stringResource(R.string.language_section))
+            }
+
+            item {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        FilterChip(
+                            selected = settings.language == "auto",
+                            onClick = { onLanguageSelected("auto") },
+                            label = { Text(stringResource(R.string.language_auto)) },
+                            modifier = Modifier.height(48.dp),
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )
+
+                        FilterChip(
+                            selected = settings.language == "fr",
+                            onClick = { onLanguageSelected("fr") },
+                            label = { Text(stringResource(R.string.language_french)) },
+                            modifier = Modifier.height(48.dp),
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )
+
+                        FilterChip(
+                            selected = settings.language == "en",
+                            onClick = { onLanguageSelected("en") },
+                            label = { Text(stringResource(R.string.language_english)) },
+                            modifier = Modifier.height(48.dp),
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        )
+                    }
+                }
+            }
+
+            item {
+                SectionDivider()
+            }
+
             // ---- Section A propos ----
             item {
-                SectionHeader(title = "A propos")
+                SectionHeader(title = stringResource(R.string.about_section))
             }
 
             item {
@@ -336,7 +394,7 @@ private fun SettingsScreenContent(
                         .padding(vertical = 8.dp)
                 ) {
                     Text(
-                        text = "WinRescue v1.0.0",
+                        text = stringResource(R.string.version_label),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurface
                     )
@@ -344,7 +402,23 @@ private fun SettingsScreenContent(
                     Spacer(modifier = Modifier.height(4.dp))
 
                     Text(
-                        text = "Usage strictement personnel",
+                        text = stringResource(R.string.personal_use_only),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        text = "Licence GPL-3.0",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Text(
+                        text = "Copyright (c) 2026 Rony Licha\nThis program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License v3.",
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -487,7 +561,8 @@ private fun SettingsScreenPreview() {
             onStepDelayChanged = {},
             onPreviewBeforeSendChanged = {},
             onDebugModeChanged = {},
-            onTestHidConnection = {}
+            onTestHidConnection = {},
+            onLanguageSelected = {}
         )
     }
 }
@@ -512,7 +587,8 @@ private fun SettingsScreenTestSuccessPreview() {
             onStepDelayChanged = {},
             onPreviewBeforeSendChanged = {},
             onDebugModeChanged = {},
-            onTestHidConnection = {}
+            onTestHidConnection = {},
+            onLanguageSelected = {}
         )
     }
 }
@@ -531,7 +607,8 @@ private fun SettingsScreenTestFailedPreview() {
             onStepDelayChanged = {},
             onPreviewBeforeSendChanged = {},
             onDebugModeChanged = {},
-            onTestHidConnection = {}
+            onTestHidConnection = {},
+            onLanguageSelected = {}
         )
     }
 }

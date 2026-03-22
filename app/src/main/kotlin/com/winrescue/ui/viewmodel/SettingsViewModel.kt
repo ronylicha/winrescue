@@ -69,6 +69,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun updateLanguage(language: String) {
+        viewModelScope.launch {
+            settingsRepository.updateLanguage(language)
+        }
+    }
+
     fun testHidConnection() {
         viewModelScope.launch {
             _isTestingHid.value = true

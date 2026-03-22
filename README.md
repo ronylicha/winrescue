@@ -2,7 +2,7 @@
 
 # WinRescue
 
-**Transformez votre smartphone Android en outil de recuperation Windows universel.** WinRescue utilise le protocole USB HID pour simuler un clavier physique sur un PC Windows, permettant d'executer automatiquement des scripts de reparation, de reinitialisation de mot de passe, de recuperation de fichiers et de diagnostic -- le tout guide par un wizard interactif step-by-step, sans cle USB bootable ni connaissances avancees en ligne de commande.
+**Transformez votre smartphone Android roote en outil de recuperation universel.** WinRescue utilise le protocole USB HID pour simuler un clavier physique sur un PC Windows, et execute des commandes shell locales pour la maintenance Android -- le tout guide par un wizard interactif step-by-step, sans cle USB bootable ni connaissances avancees.
 
 ![Dashboard](docs/assets/winrescue-hero.png)
 
@@ -10,33 +10,32 @@
 
 ## Fonctionnalites
 
-### Recovery (7 scripts)
+### Windows Recovery (22 scripts via USB HID)
 
-- **Reset mot de passe** (Win10 / Win11) -- Reinitialise le mot de passe d'un compte local via WinRE et `net user`
-- **Reset PIN Windows Hello** (Win11) -- Supprime les donnees NGC (PIN, empreinte, reconnaissance faciale)
-- **Recuperation de fichiers** (Win10 / Win11) -- Copie Documents, Images, Bureau, Telechargements vers une cle USB via WinRE
-- **Reinitialisation usine** (Win10 / Win11) -- Restaure Windows a son etat d'origine via WinRE
+- **Reset mot de passe** (Win10 / Win11) -- Reinitialise le mot de passe d'un compte local via WinRE
+- **Reset PIN Windows Hello** (Win11) -- Supprime les donnees NGC
+- **Recuperation de fichiers** (Win10 / Win11) -- Copie Documents/Images/Bureau vers USB via WinRE
+- **Reinitialisation usine** (Win10 / Win11) -- Restaure Windows a son etat d'origine
+- **Creation compte admin** (Win10 / Win11) -- Cree un compte local administrateur
+- **Activation admin cache** (Win10 / Win11) -- Active le compte Administrateur integre
+- **Reparation boot** (Win10 / Win11) -- Repare MBR/BCD via `bootrec` et `bcdboot`
+- **Reparation SFC/DISM** (Win10 + Win11) -- Restaure les fichiers systeme corrompus
+- **Mode sans echec** (Win10 + Win11) -- Force le demarrage en Safe Mode
+- **Desactivation BitLocker** (Win10 / Win11) -- Deverrouille et desactive le chiffrement
+- **Suppression malware** (Win10 / Win11) -- Nettoie registre Run et fichiers malveillants
+- **Activation RDP** (Win10 / Win11) -- Active le Bureau a Distance
+- **Reset reseau** (Win10 + Win11) -- Reinitialise Winsock, TCP/IP, DNS
 
-### Administration (4 scripts)
+### Android (8 scripts via shell root)
 
-- **Creation compte admin** (Win10 / Win11) -- Cree un compte local administrateur via `net user /add`
-- **Activation admin cache** (Win10 / Win11) -- Active le compte Administrateur integre de Windows
-
-### Reparation (4 scripts)
-
-- **Reparation boot** (Win10 / Win11) -- Repare MBR/BCD via `bootrec` et `bcdboot` (EFI)
-- **Reparation systeme SFC/DISM** (Win10 + Win11) -- Scanne et restaure les fichiers systeme corrompus
-- **Mode sans echec force** (Win10 + Win11) -- Force le demarrage en Safe Mode via `bcdedit`
-
-### Securite (4 scripts)
-
-- **Desactivation BitLocker** (Win10 / Win11) -- Deverrouille et desactive le chiffrement avec la cle de recuperation
-- **Suppression malware** (Win10 / Win11) -- Nettoie les cles de registre Run, fichiers malveillants et proxy
-
-### Reseau (3 scripts)
-
-- **Activation RDP** (Win10 / Win11) -- Active le Bureau a Distance via le registre et le pare-feu
-- **Reset reseau** (Win10 + Win11) -- Reinitialise Winsock, TCP/IP, DNS et proxy
+- **Vider le cache** -- Supprime le cache de toutes les applications (`pm trim-caches`)
+- **Reset WiFi/Bluetooth** -- Reinitialise les parametres reseau Android
+- **Forcer l'arret d'une app** -- Arrete et vide le cache d'un package
+- **Recalibrer la batterie** -- Reset des statistiques batterie
+- **Desactiver une app systeme** -- Desactive le bloatware sans suppression
+- **Changer les DNS** -- Configure DNS prive (Cloudflare/Google/Quad9)
+- **Modifier le DPI** -- Change la densite d'affichage
+- **Diagnostic systeme** -- Genere un rapport complet (CPU/RAM/stockage/batterie)
 
 ![Features](docs/assets/winrescue-features.png)
 
@@ -48,9 +47,9 @@
 |---------|--------|
 | **Smartphone** | Android 8.0+ (API 26) |
 | **Root** | Magisk ou KernelSU |
-| **Module kernel** | `libcomposite` (charge automatiquement par l'app) |
+| **Kernel** | `CONFIG_USB_CONFIGFS_F_HID=y` (compile ou module `libcomposite`) |
 | **Cable** | USB-C / OTG (cable de donnees, pas charge seule) |
-| **Appareils testes** | Google Pixel, OnePlus |
+| **Appareils testes** | Unihertz Titan 2 (auto-setup), Google Pixel, OnePlus |
 | **Appareils non compatibles** | Samsung (TEE whitelist), Xiaomi (configfs restrictif), Huawei (bootloader verrouille) |
 
 > **Note** : Le root est obligatoire pour creer le peripherique USB HID virtuel (`/dev/hidg0`) via configfs et ecrire les rapports HID.
@@ -100,8 +99,8 @@ com.winrescue/
 │   ├── model/                   # Modeles de donnees
 │   │   ├── Script.kt            # Script de recuperation (id, steps, inputs)
 │   │   ├── ScriptStep.kt        # Etape du wizard (instruction, actions, confirm)
-│   │   ├── KeyAction.kt         # Action HID (string, key, combination, wait, repeat, template)
-│   │   └── Enums.kt             # OsTarget, ScriptCategory, Difficulty, InputType
+│   │   ├── KeyAction.kt         # Action HID (string, key, combination, wait, repeat, template, shell)
+│   │   └── Enums.kt             # OsTarget (WIN10/WIN11/ANDROID/BOTH), ScriptCategory, Difficulty
 │   ├── repository/              # Acces aux scripts JSON (assets)
 │   │   ├── ScriptRepository.kt  # Interface
 │   │   └── ScriptRepositoryImpl.kt
@@ -124,7 +123,8 @@ com.winrescue/
 │   │   ├── WarningBanner.kt     # Banniere d'avertissement
 │   │   ├── StepIndicator.kt     # Progression du wizard
 │   │   ├── CountdownTimer.kt    # Timer entre les etapes
-│   │   └── KeySequencePreview.kt # Preview des touches HID
+│   │   ├── HintImage.kt         # Chargement images hint depuis assets/hints/
+│   │   └── KeySequencePreview.kt # Preview des touches HID + shell
 │   ├── screens/                 # Ecrans principaux
 │   │   ├── HomeScreen.kt        # Dashboard + recherche + filtres
 │   │   ├── ScriptDetailScreen.kt # Detail d'un script + inputs
@@ -163,7 +163,7 @@ com.winrescue/
 │                                                  │       │
 │  ┌──────────────┐    ┌───────────────┐    ┌─────▼─────┐ │
 │  │ ScriptJSON   │───>│ ScriptRepo    │    │ HidKeyMap  │ │
-│  │ (22 scripts) │    │ (deserialize) │    │ (scancode) │ │
+│  │ (30 scripts) │    │ (deserialize) │    │ (scancode) │ │
 │  └──────────────┘    └───────────────┘    └─────┬─────┘ │
 │                                                  │       │
 │  ┌──────────────┐    ┌───────────────┐    ┌─────▼─────┐ │
@@ -215,6 +215,14 @@ com.winrescue/
 | `enable_rdp_win10` | Activation RDP | Win10 | Network | Medium | 3 min |
 | `enable_rdp_win11` | Activation RDP | Win11 | Network | Medium | 3 min |
 | `reset_network` | Reset reseau complet | Both | Network | Easy | 5 min |
+| `android_clear_app_cache` | Vider le cache | Android | Repair | Easy | 1 min |
+| `android_reset_wifi` | Reset WiFi/Bluetooth | Android | Network | Medium | 2 min |
+| `android_force_stop_app` | Forcer arret app | Android | Repair | Easy | 1 min |
+| `android_battery_stats_reset` | Recalibrer batterie | Android | Diagnostic | Easy | 1 min |
+| `android_disable_bloatware` | Desactiver app systeme | Android | Admin | Medium | 1 min |
+| `android_dns_change` | Changer les DNS | Android | Network | Easy | 1 min |
+| `android_screen_density` | Modifier le DPI | Android | Admin | Easy | 1 min |
+| `android_system_info` | Diagnostic complet | Android | Diagnostic | Easy | 2 min |
 
 ---
 
@@ -230,6 +238,7 @@ com.winrescue/
 | `previewBeforeSend` | `true` | Afficher la preview des touches avant envoi |
 | `debugMode` | `false` | Activer les logs detailles |
 | `hidDevicePath` | `/dev/hidg0` | Chemin du peripherique HID |
+| `language` | `auto` | Langue de l'interface (`auto`, `fr`, `en`) |
 
 ### Layout clavier
 
@@ -350,13 +359,21 @@ docs(readme): mettre a jour la matrice de compatibilite
 refactor(root): extraire la logique SELinux dans une classe dediee
 ```
 
-### Ajouter un nouveau script
+### Ajouter un script Windows (USB HID)
 
 1. Creer un fichier JSON dans `app/src/main/assets/scripts/`
 2. Suivre la structure existante (voir `reset_password_win10.json` comme reference)
 3. Chaque etape doit avoir une `instruction` claire, une `confirmQuestion` et etre `retryable` si applicable
 4. Marquer les etapes irreversibles avec `criticalStep: true`
 5. Tester sur un PC reel avec le bon layout clavier
+
+### Ajouter un script Android (shell root)
+
+1. Creer un fichier JSON dans `app/src/main/assets/scripts/` (prefixe `android_`)
+2. Utiliser `"os": ["ANDROID"]` et `"type": "shell"` dans les actions
+3. Chaque action shell doit avoir `"root": true` et une `"description"` claire
+4. Les templates `{{input_id}}` sont supportes dans les commandes shell
+5. Tester sur un appareil roote reel
 
 ### Pull Requests
 

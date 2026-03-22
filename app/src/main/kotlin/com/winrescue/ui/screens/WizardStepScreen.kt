@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.winrescue.ui.components.HintImage
 import com.winrescue.ui.components.KeySequencePreview
 import com.winrescue.ui.components.StepIndicator
 import com.winrescue.ui.components.WarningBanner
@@ -241,39 +242,9 @@ private fun WaitingConfirmContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Image hint (placeholder)
+        // Image hint
         if (step.imageHint != null) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = SurfaceVariant
-                )
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.Image,
-                            contentDescription = "Illustration",
-                            modifier = Modifier.size(48.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = step.imageHint,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
-                }
-            }
-
+            HintImage(imageHint = step.imageHint)
             Spacer(modifier = Modifier.height(16.dp))
         }
 
@@ -524,37 +495,7 @@ private fun WaitingResultContent(
         // Image hint apres envoi
         if (step.imageHint != null) {
             Spacer(modifier = Modifier.height(16.dp))
-
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = SurfaceVariant
-                )
-            ) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(
-                            imageVector = Icons.Default.Image,
-                            contentDescription = "Illustration attendue",
-                            modifier = Modifier.size(48.dp),
-                            tint = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = step.imageHint,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier.padding(horizontal = 16.dp)
-                        )
-                    }
-                }
-            }
+            HintImage(imageHint = step.imageHint)
         }
 
         Spacer(modifier = Modifier.weight(1f))

@@ -135,6 +135,10 @@ class HidKeyboardManager @Inject constructor(
                 val resolved = resolveTemplate(action.template, inputs)
                 typeString(resolved, action.delayBetweenCharsMs, layout)
             }
+
+            is KeyAction.ShellCommand -> {
+                // Gere par WizardViewModel.executeShellAction(), pas par le HID manager
+            }
         }
     }
 

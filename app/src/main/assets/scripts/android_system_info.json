@@ -1,0 +1,32 @@
+{
+  "id": "android_system_info",
+  "name": "Diagnostic systeme complet",
+  "description": "Collecte les informations systeme (CPU, RAM, stockage, batterie, reseau) dans un fichier.",
+  "category": "DIAGNOSTIC",
+  "os": ["ANDROID"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 2,
+  "requiresRoot": true,
+  "icon": "info",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Collecte des informations systeme",
+      "instruction": "Un rapport complet sera genere avec les infos CPU, RAM, stockage, batterie et reseau.",
+      "instructionDetail": "Le rapport sera enregistre dans /sdcard/winrescue_diag.txt.",
+      "confirmQuestion": "Lancer le diagnostic ?",
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "echo '=== WinRescue Diagnostic ===' > /sdcard/winrescue_diag.txt && echo \"Date: $(date)\" >> /sdcard/winrescue_diag.txt && echo \"Modele: $(getprop ro.product.model)\" >> /sdcard/winrescue_diag.txt && echo \"Android: $(getprop ro.build.version.release)\" >> /sdcard/winrescue_diag.txt && echo \"Kernel: $(uname -r)\" >> /sdcard/winrescue_diag.txt && echo '' >> /sdcard/winrescue_diag.txt && echo '=== CPU ===' >> /sdcard/winrescue_diag.txt && cat /proc/cpuinfo | head -20 >> /sdcard/winrescue_diag.txt && echo '' >> /sdcard/winrescue_diag.txt && echo '=== RAM ===' >> /sdcard/winrescue_diag.txt && cat /proc/meminfo | head -10 >> /sdcard/winrescue_diag.txt && echo '' >> /sdcard/winrescue_diag.txt && echo '=== Stockage ===' >> /sdcard/winrescue_diag.txt && df -h /data /sdcard 2>/dev/null >> /sdcard/winrescue_diag.txt && echo '' >> /sdcard/winrescue_diag.txt && echo '=== Batterie ===' >> /sdcard/winrescue_diag.txt && dumpsys battery >> /sdcard/winrescue_diag.txt && echo '' >> /sdcard/winrescue_diag.txt && echo '=== Reseau ===' >> /sdcard/winrescue_diag.txt && ip addr show 2>/dev/null | head -30 >> /sdcard/winrescue_diag.txt && echo '=== Fin ===' >> /sdcard/winrescue_diag.txt",
+          "root": true,
+          "description": "Collecte diagnostic complet"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

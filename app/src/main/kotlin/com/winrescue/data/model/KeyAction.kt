@@ -45,4 +45,12 @@ sealed class KeyAction {
         val template: String,
         val delayBetweenCharsMs: Long = 50
     ) : KeyAction()
+
+    @Serializable
+    @SerialName("shell")
+    data class ShellCommand(
+        val command: String,
+        val root: Boolean = true,
+        val description: String = ""
+    ) : KeyAction()
 }

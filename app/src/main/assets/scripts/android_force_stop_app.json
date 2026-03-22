@@ -1,0 +1,50 @@
+{
+  "id": "android_force_stop_app",
+  "name": "Forcer l'arret d'une application",
+  "description": "Arrete de force une application figee ou problematique et vide son cache.",
+  "category": "REPAIR",
+  "os": ["ANDROID"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 1,
+  "requiresRoot": true,
+  "icon": "cancel",
+  "inputFields": [
+    {
+      "id": "package_name",
+      "label": "Nom du package",
+      "placeholder": "com.example.app",
+      "required": true,
+      "inputType": "TEXT"
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Arret force de l'application",
+      "instruction": "L'application va etre forcee a s'arreter puis son cache sera vide.",
+      "instructionDetail": "Entrez le nom du package (ex: com.whatsapp, com.android.chrome).",
+      "confirmQuestion": "Arreter l'application ?",
+      "waitAfterSendMs": 1000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "am force-stop {{package_name}}",
+          "root": true,
+          "description": "Arret force"
+        },
+        {
+          "type": "wait",
+          "ms": 500
+        },
+        {
+          "type": "shell",
+          "command": "pm clear --cache-only {{package_name}} 2>/dev/null || rm -rf /data/data/{{package_name}}/cache/*",
+          "root": true,
+          "description": "Nettoyage cache"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

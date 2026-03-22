@@ -3,6 +3,8 @@ package com.winrescue.ui.viewmodel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import android.util.Log
+import com.topjohnwu.superuser.Shell
 import com.winrescue.data.model.KeyAction
 import com.winrescue.data.model.Script
 import com.winrescue.data.model.ScriptStep
@@ -116,15 +118,19 @@ class WizardViewModel @Inject constructor(
 
                 val settings = settingsRepository.settings.first()
                 val totalActions = step.actions.size
-                val connected = hidKeyboardManager.connect()
-                if (!connected) {
-                    _state.update {
-                        it.copy(
-                            stepState = StepState.Error("Impossible de se connecter au peripherique HID."),
-                            errorMessage = "Impossible de se connecter au peripherique HID."
-                        )
+                val hasShellOnly = step.actions.all { it is KeyAction.ShellCommand || it is KeyAction.Wait }
+
+                if (!hasShellOnly) {
+                    val connected = hidKeyboardManager.connect()
+                    if (!connected) {
+                        _state.update {
+                            it.copy(
+                                stepState = StepState.Error("Impossible de se connecter au peripherique HID."),
+                                errorMessage = "Impossible de se connecter au peripherique HID."
+                            )
+                        }
+                        return@launch
                     }
-                    return@launch
                 }
 
                 for ((index, action) in step.actions.withIndex()) {
@@ -136,21 +142,27 @@ class WizardViewModel @Inject constructor(
                         )
                     }
 
-                    hidKeyboardManager.sendKeyAction(
-                        action = action,
-                        inputs = currentState.userInputs,
-                        layout = settings.keyboardLayout
-                    )
+                    if (action is KeyAction.ShellCommand) {
+                        executeShellAction(action, currentState.userInputs)
+                    } else {
+                        hidKeyboardManager.sendKeyAction(
+                            action = action,
+                            inputs = currentState.userInputs,
+                            layout = settings.keyboardLayout
+                        )
+                    }
                 }
 
-                _state.update { it.copy(sendingProgress = 1f, sendingDetail = "Envoi termine") }
+                _state.update { it.copy(sendingProgress = 1f, sendingDetail = "Termine") }
 
                 if (step.waitAfterSendMs > 0) {
-                    _state.update { it.copy(sendingDetail = "Attente apres envoi...") }
+                    _state.update { it.copy(sendingDetail = "Attente...") }
                     delay(step.waitAfterSendMs)
                 }
 
-                hidKeyboardManager.disconnect()
+                if (!hasShellOnly) {
+                    hidKeyboardManager.disconnect()
+                }
 
                 if (step.confirmQuestion != null) {
                     _state.update { it.copy(stepState = StepState.WaitingResult) }
@@ -253,6 +265,33 @@ class WizardViewModel @Inject constructor(
                     resolved = resolved.replace("{{$key}}", value)
                 }
                 "Saisie : $resolved"
+            }
+            is KeyAction.ShellCommand -> {
+                if (action.description.isNotBlank()) action.description
+                else "Shell : ${action.command.take(60)}"
+            }
+        }
+    }
+
+    private suspend fun executeShellAction(
+        action: KeyAction.ShellCommand,
+        inputs: Map<String, String>
+    ) {
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            var cmd = action.command
+            inputs.forEach { (key, value) ->
+                cmd = cmd.replace("{{$key}}", value)
+            }
+            Log.d("WizardViewModel", "Shell: $cmd")
+            val result = Shell.cmd(cmd).exec()
+            val output = result.out.joinToString("\n")
+            val errors = result.err.joinToString("\n")
+            Log.d("WizardViewModel", "Shell out: $output")
+            if (errors.isNotBlank()) {
+                Log.w("WizardViewModel", "Shell err: $errors")
+            }
+            if (!result.isSuccess) {
+                throw Exception("Commande echouee (code ${result.code}): ${errors.ifBlank { output }}")
             }
         }
     }

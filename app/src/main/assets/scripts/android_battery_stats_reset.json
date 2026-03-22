@@ -1,0 +1,38 @@
+{
+  "id": "android_battery_stats_reset",
+  "name": "Recalibrer la batterie",
+  "description": "Reinitialise les statistiques de batterie pour corriger les pourcentages errones.",
+  "category": "DIAGNOSTIC",
+  "os": ["ANDROID"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 1,
+  "requiresRoot": true,
+  "icon": "battery_full",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Reset des statistiques batterie",
+      "instruction": "Les statistiques de batterie vont etre reinitialises. Le pourcentage affiche pourrait changer temporairement.",
+      "instructionDetail": "Apres le reset, laissez le telephone se decharger puis le recharger completement pour une calibration optimale.",
+      "confirmQuestion": "Reinitialiser les stats batterie ?",
+      "waitAfterSendMs": 1000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "dumpsys batterystats --reset",
+          "root": true,
+          "description": "Reset statistiques batterie"
+        },
+        {
+          "type": "shell",
+          "command": "rm -f /data/system/batterystats.bin",
+          "root": true,
+          "description": "Suppression fichier stats"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

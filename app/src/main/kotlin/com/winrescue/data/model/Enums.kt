@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 enum class OsTarget {
-    WIN10, WIN11, BOTH
+    WIN10, WIN11, ANDROID, BOTH
 }
 
 @Serializable

@@ -1,0 +1,53 @@
+{
+  "id": "android_dns_change",
+  "name": "Changer les DNS (Cloudflare/Google)",
+  "description": "Configure les DNS prives sur 1.1.1.1 (Cloudflare) ou 8.8.8.8 (Google) pour accelerer la navigation.",
+  "category": "NETWORK",
+  "os": ["ANDROID"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 1,
+  "requiresRoot": true,
+  "icon": "dns",
+  "inputFields": [
+    {
+      "id": "dns_server",
+      "label": "Serveur DNS",
+      "placeholder": "1.1.1.1",
+      "defaultValue": "1.1.1.1",
+      "required": true,
+      "inputType": "TEXT"
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Configuration du DNS prive",
+      "instruction": "Le DNS prive va etre configure. Cela ameliore la vitesse et la confidentialite de la navigation.",
+      "instructionDetail": "DNS populaires : 1.1.1.1 (Cloudflare), 8.8.8.8 (Google), 9.9.9.9 (Quad9).",
+      "confirmQuestion": "Appliquer le nouveau DNS ?",
+      "waitAfterSendMs": 1000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "settings put global private_dns_mode hostname",
+          "root": true,
+          "description": "Activation DNS prive"
+        },
+        {
+          "type": "shell",
+          "command": "settings put global private_dns_specifier {{dns_server}}",
+          "root": true,
+          "description": "Configuration serveur DNS"
+        },
+        {
+          "type": "shell",
+          "command": "ndc resolver clearnetdns wlan0 2>/dev/null; ndc resolver flushdefaultif 2>/dev/null; echo OK",
+          "root": true,
+          "description": "Flush cache DNS"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

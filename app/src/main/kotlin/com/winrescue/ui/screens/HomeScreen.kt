@@ -162,7 +162,7 @@ fun HomeScreenContent(
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val tabs = listOf("Dashboard", "Windows 10", "Windows 11", "Linux")
+    val tabs = listOf("Dashboard", "Windows 10", "Windows 11", "Android", "Linux")
 
     val filteredScripts = uiState.scripts.filter { script ->
         if (searchQuery.isBlank()) true
@@ -227,7 +227,7 @@ fun HomeScreenContent(
                 }
             ) {
                 tabs.forEachIndexed { index, title ->
-                    val isLinux = index == 3
+                    val isLinux = index == 4
                     Tab(
                         selected = selectedTabIndex == index,
                         onClick = {
@@ -236,6 +236,7 @@ fun HomeScreenContent(
                                 when (index) {
                                     1 -> onOsSelected(OsTarget.WIN10)
                                     2 -> onOsSelected(OsTarget.WIN11)
+                                    3 -> onOsSelected(OsTarget.ANDROID)
                                 }
                             }
                         },
@@ -279,8 +280,8 @@ fun HomeScreenContent(
                         usbState = uiState.usbState
                     )
                 }
-                1, 2 -> {
-                    // Win10 / Win11 script list
+                1, 2, 3 -> {
+                    // Win10 / Win11 / Android script list
                     ScriptListContent(
                         scripts = filteredScripts,
                         searchQuery = searchQuery,

@@ -134,6 +134,15 @@ private fun TerminalLine(
                         append(resolvedText)
                     }
                 }
+
+                is KeyAction.ShellCommand -> {
+                    withStyle(SpanStyle(color = TerminalComment)) {
+                        append("$ ")
+                    }
+                    withStyle(SpanStyle(color = DifficultyEasy)) {
+                        append(action.command.take(80))
+                    }
+                }
             }
         },
         fontFamily = JetBrainsMono,

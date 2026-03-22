@@ -459,6 +459,7 @@ private fun StepNumber(number: Int) {
 private fun osLabel(os: OsTarget): String = when (os) {
     OsTarget.WIN10 -> "10"
     OsTarget.WIN11 -> "11"
+    OsTarget.ANDROID -> "Android"
     OsTarget.BOTH -> "10/11"
 }
 

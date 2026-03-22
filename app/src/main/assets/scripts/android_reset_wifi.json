@@ -1,0 +1,93 @@
+{
+  "id": "android_reset_wifi",
+  "name": "Reset WiFi / Bluetooth / Mobile",
+  "description": "Reinitialise les parametres reseau (WiFi, Bluetooth, donnees mobiles).",
+  "category": "NETWORK",
+  "os": ["ANDROID"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 2,
+  "requiresRoot": true,
+  "icon": "wifi_off",
+  "warningMessage": "Tous les reseaux WiFi enregistres seront supprimes. Vous devrez vous reconnecter.",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Desactivation du WiFi",
+      "instruction": "Le WiFi va etre desactive puis les parametres reseau reinitialises.",
+      "confirmQuestion": "Reinitialiser les parametres reseau ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 1000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "svc wifi disable",
+          "root": true,
+          "description": "Desactivation WiFi"
+        },
+        {
+          "type": "wait",
+          "ms": 1000
+        },
+        {
+          "type": "shell",
+          "command": "svc bluetooth disable",
+          "root": true,
+          "description": "Desactivation Bluetooth"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    },
+    {
+      "id": 2,
+      "title": "Reinitialisation des parametres",
+      "instruction": "Les fichiers de configuration reseau sont supprimes.",
+      "confirmQuestion": "Le WiFi a-t-il ete desactive ?",
+      "waitAfterSendMs": 2000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "rm -f /data/misc/wifi/WifiConfigStore.xml",
+          "root": true,
+          "description": "Suppression config WiFi"
+        },
+        {
+          "type": "shell",
+          "command": "rm -f /data/misc/bluedroid/bt_config.conf",
+          "root": true,
+          "description": "Suppression config Bluetooth"
+        }
+      ],
+      "retryable": false,
+      "criticalStep": false
+    },
+    {
+      "id": 3,
+      "title": "Reactivation",
+      "instruction": "Le WiFi et le Bluetooth sont reactives.",
+      "confirmQuestion": "Le WiFi s'est-il reactive ?",
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "svc wifi enable",
+          "root": true,
+          "description": "Reactivation WiFi"
+        },
+        {
+          "type": "wait",
+          "ms": 2000
+        },
+        {
+          "type": "shell",
+          "command": "svc bluetooth enable",
+          "root": true,
+          "description": "Reactivation Bluetooth"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

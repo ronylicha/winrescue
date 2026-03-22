@@ -1,0 +1,41 @@
+{
+  "id": "android_screen_density",
+  "name": "Modifier la densite d'affichage (DPI)",
+  "description": "Change le DPI de l'ecran pour afficher plus ou moins de contenu.",
+  "category": "ADMIN",
+  "os": ["ANDROID"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 1,
+  "requiresRoot": true,
+  "icon": "zoom_in",
+  "inputFields": [
+    {
+      "id": "dpi_value",
+      "label": "DPI souhaite",
+      "placeholder": "420",
+      "defaultValue": "420",
+      "required": true,
+      "inputType": "NUMBER"
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Modification du DPI",
+      "instruction": "La densite d'affichage va etre modifiee. Un DPI plus bas = plus de contenu affiche. Un DPI plus haut = elements plus grands.",
+      "instructionDetail": "Valeurs courantes : 320 (compact), 420 (standard), 480 (large), 560 (tres large).",
+      "confirmQuestion": "Appliquer le nouveau DPI ?",
+      "waitAfterSendMs": 1000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "wm density {{dpi_value}}",
+          "root": true,
+          "description": "Changement DPI"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

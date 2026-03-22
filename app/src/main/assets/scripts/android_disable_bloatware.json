@@ -1,0 +1,41 @@
+{
+  "id": "android_disable_bloatware",
+  "name": "Desactiver une app systeme",
+  "description": "Desactive une application pre-installee (bloatware) sans la supprimer.",
+  "category": "ADMIN",
+  "os": ["ANDROID"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 1,
+  "requiresRoot": true,
+  "icon": "block",
+  "warningMessage": "Desactiver certaines apps systeme peut causer des instabilites. Verifiez le package avant de continuer.",
+  "inputFields": [
+    {
+      "id": "package_name",
+      "label": "Package a desactiver",
+      "placeholder": "com.vendor.bloatware",
+      "required": true,
+      "inputType": "TEXT"
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Desactivation de l'application",
+      "instruction": "L'application systeme va etre desactivee. Elle ne sera plus visible dans le launcher mais restera sur la partition systeme.",
+      "instructionDetail": "Pour la reactiver plus tard: pm enable {{package_name}}",
+      "confirmQuestion": "Desactiver cette application ?",
+      "waitAfterSendMs": 1000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "pm disable-user --user 0 {{package_name}}",
+          "root": true,
+          "description": "Desactivation du package"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "android_clear_app_cache",
+  "name": "Vider le cache des applications",
+  "description": "Supprime le cache de toutes les applications pour liberer de l'espace.",
+  "category": "REPAIR",
+  "os": ["ANDROID"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 1,
+  "requiresRoot": true,
+  "icon": "delete_sweep",
+  "warningMessage": null,
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Suppression du cache",
+      "instruction": "Le cache de toutes les applications va etre supprime. Vos donnees personnelles ne seront pas affectees.",
+      "instructionDetail": "Seuls les fichiers temporaires (cache) seront effaces.",
+      "imageHint": null,
+      "confirmQuestion": "Lancer le nettoyage du cache ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 2000,
+      "actions": [
+        {
+          "type": "shell",
+          "command": "pm trim-caches 999999999999",
+          "root": true,
+          "description": "Nettoyage du cache systeme"
+        }
+      ],
+      "retryable": true,
+      "criticalStep": false
+    }
+  ]
+}

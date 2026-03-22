@@ -1,0 +1,103 @@
+{
+  "id": "force_safe_mode",
+  "name": "Forcer le Mode Sans Echec",
+  "description": "Force le demarrage de Windows en Mode Sans Echec via une commande bcdedit dans l'environnement de recuperation. Utile quand Windows ne demarre plus normalement.",
+  "category": "REPAIR",
+  "os": ["WIN10", "WIN11"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 10,
+  "requiresRoot": true,
+  "icon": "healing",
+  "warningMessage": null,
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Acceder a l'environnement de recuperation",
+      "instruction": "Demarrez le PC en mode recuperation (WinRE). Forcez 3 extinctions consecutives au demarrage si necessaire.",
+      "instructionDetail": "Allumez le PC, quand le logo Windows apparait maintenez le bouton power 10s. Repetez 3 fois pour declencher la reparation automatique.",
+      "imageHint": "hint_winre_menu",
+      "confirmQuestion": "Voyez-vous l'ecran bleu 'Choisir une option' ou 'Reparation automatique' ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Forcez 3 extinctions au demarrage : allumez le PC, quand le logo Windows apparait maintenez le bouton power 10s. Repetez 3 fois.",
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Ouvrir l'invite de commandes WinRE",
+      "instruction": "Naviguez vers Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "L'invite de commandes WinRE permet d'executer bcdedit pour modifier les options de demarrage de Windows.",
+      "imageHint": "hint_winre_cmd",
+      "confirmQuestion": "L'invite de commandes (fenetre noire) est-elle ouverte ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Naviguez manuellement vers Depannage > Options avancees > Invite de commandes.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Activer le Mode Sans Echec",
+      "instruction": "La commande bcdedit va configurer Windows pour demarrer en Mode Sans Echec au prochain redemarrage.",
+      "instructionDetail": "La commande 'bcdedit /set {default} safeboot minimal' force Windows a demarrer en Mode Sans Echec minimal (sans reseau). Ce mode charge uniquement les pilotes essentiels.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "Le message 'L'operation a reussi.' ou 'The operation completed successfully.' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "bcdedit /set {default} safeboot minimal", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si une erreur apparait, verifiez que vous etes bien dans l'invite de commandes WinRE et retapez la commande.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Fermer et redemarrer en Mode Sans Echec",
+      "instruction": "Tapez 'exit' pour fermer l'invite de commandes, puis selectionnez 'Continuer' pour redemarrer. Windows demarrera en Mode Sans Echec.",
+      "instructionDetail": "En Mode Sans Echec, l'ecran affiche 'Mode sans echec' dans les coins. Vous pouvez desinstaller des programmes, supprimer des virus ou corriger des problemes de pilotes.",
+      "imageHint": "hint_restart_pc",
+      "confirmQuestion": "Le PC a-t-il redemarre en Mode Sans Echec (texte 'Mode sans echec' visible) ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "string", "value": "exit", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    },
+    {
+      "id": 5,
+      "title": "Desactiver le Mode Sans Echec (apres reparation)",
+      "instruction": "IMPORTANT : une fois vos reparations terminees en Mode Sans Echec, ouvrez une invite de commandes (CMD) en tant qu'administrateur et executez la commande suivante pour revenir au demarrage normal :",
+      "instructionDetail": "Commande a executer : bcdedit /deletevalue {default} safeboot\n\nSans cette etape, Windows redemarrera toujours en Mode Sans Echec. Pour ouvrir CMD admin : clic droit sur le menu Demarrer > Terminal (admin) ou Invite de commandes (admin).",
+      "imageHint": "hint_cmd_admin",
+      "confirmQuestion": "Avez-vous bien note la commande pour desactiver le Mode Sans Echec apres reparation ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    }
+  ]
+}

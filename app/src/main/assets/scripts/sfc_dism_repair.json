@@ -1,0 +1,133 @@
+{
+  "id": "sfc_dism_repair",
+  "name": "Reparation fichiers systeme (SFC + DISM)",
+  "description": "Repare les fichiers systeme corrompus de Windows en utilisant les outils SFC (System File Checker) et DISM (Deployment Image Servicing and Management). Resout les plantages, ecrans bleus et erreurs systeme.",
+  "category": "REPAIR",
+  "os": ["WIN10", "WIN11"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 30,
+  "requiresRoot": true,
+  "icon": "build",
+  "warningMessage": "Cette operation peut prendre 15 a 30 minutes. Ne debranchez pas le cable.",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Ouvrir l'invite de commandes en administrateur",
+      "instruction": "Ouvrez une invite de commandes en tant qu'administrateur. Si Windows demarre normalement : appuyez sur Win+R, tapez 'cmd', puis appuyez sur Ctrl+Maj+Entree. Si Windows ne demarre pas : accedez a WinRE > Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "Les commandes SFC et DISM necessitent les privileges administrateur pour pouvoir modifier les fichiers systeme de Windows.",
+      "imageHint": "hint_cmd_admin",
+      "confirmQuestion": "L'invite de commandes administrateur est-elle ouverte ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Methode alternative : clic droit sur le menu Demarrer > Terminal (admin) ou Invite de commandes (admin).",
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Lancer le scan SFC",
+      "instruction": "La commande SFC /scannow va scanner tous les fichiers systeme proteges et reparer ceux qui sont corrompus.",
+      "instructionDetail": "SFC (System File Checker) compare chaque fichier systeme avec sa copie de reference. Les fichiers corrompus ou modifies sont automatiquement remplaces. Cette etape prend generalement 5 a 15 minutes.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": null,
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "sfc /scannow", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Attendre la fin du scan SFC",
+      "instruction": "Le scan SFC est en cours. Attendez que le pourcentage atteigne 100% et qu'un message de resultat apparaisse. Cela peut prendre 5 a 15 minutes.",
+      "instructionDetail": "Messages possibles :\n- 'La protection des ressources Windows n'a trouve aucune violation d'integrite' : tout est OK.\n- 'La protection des ressources Windows a trouve des fichiers corrompus et les a repares' : des fichiers ont ete corriges.\n- 'La protection des ressources Windows a trouve des fichiers corrompus mais n'a pas pu en reparer certains' : DISM peut aider.",
+      "imageHint": "hint_cmd_progress",
+      "confirmQuestion": "Le scan SFC est-il termine (message de resultat affiche) ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 2000,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Patientez, le scan peut prendre jusqu'a 15 minutes. Ne fermez pas la fenetre.",
+      "criticalStep": false
+    },
+    {
+      "id": 4,
+      "title": "Verifier l'etat de l'image DISM",
+      "instruction": "La commande DISM CheckHealth va verifier rapidement si l'image Windows est corrompue.",
+      "instructionDetail": "DISM travaille au niveau de l'image systeme Windows, un niveau plus profond que SFC. Si l'image est corrompue, DISM peut la reparer en telechargeant les composants manquants depuis Windows Update.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": null,
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "DISM /Online /Cleanup-Image /CheckHealth", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    },
+    {
+      "id": 5,
+      "title": "Scanner l'image DISM en profondeur",
+      "instruction": "La commande DISM ScanHealth effectue un scan approfondi de l'image systeme. Cette etape prend 5 a 10 minutes.",
+      "instructionDetail": "ScanHealth est plus thorough que CheckHealth. Il analyse chaque composant de l'image Windows pour detecter les corruptions.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "Le scan DISM ScanHealth est-il termine ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "DISM /Online /Cleanup-Image /ScanHealth", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Patientez, le scan peut prendre jusqu'a 10 minutes.",
+      "criticalStep": false
+    },
+    {
+      "id": 6,
+      "title": "Reparer l'image avec DISM RestoreHealth",
+      "instruction": "La commande DISM RestoreHealth va reparer les corruptions detectees. Cette etape peut prendre 10 a 20 minutes et necessite une connexion internet.",
+      "instructionDetail": "RestoreHealth telecharge les composants sains depuis Windows Update pour remplacer les fichiers corrompus. Si vous n'avez pas internet, vous pouvez utiliser un support d'installation Windows comme source.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "La commande DISM RestoreHealth est-elle terminee avec succes ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "DISM /Online /Cleanup-Image /RestoreHealth", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si la commande echoue, verifiez votre connexion internet. Alternative sans internet : DISM /Online /Cleanup-Image /RestoreHealth /Source:D:\\sources\\install.wim (adaptez la lettre du lecteur).",
+      "criticalStep": true
+    },
+    {
+      "id": 7,
+      "title": "Relancer SFC et redemarrer",
+      "instruction": "Relancez un dernier scan SFC pour verifier que toutes les reparations sont effectives, puis redemarrez le PC.",
+      "instructionDetail": "Apres DISM RestoreHealth, un nouveau scan SFC peut reparer des fichiers qui n'avaient pas pu etre corriges la premiere fois. Le redemarrage applique toutes les modifications.",
+      "imageHint": "hint_restart_pc",
+      "confirmQuestion": "Le scan SFC final est-il termine et le PC pret a redemarrer ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "sfc /scannow", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    }
+  ]
+}

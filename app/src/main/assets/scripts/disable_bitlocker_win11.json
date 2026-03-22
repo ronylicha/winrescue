@@ -1,0 +1,111 @@
+{
+  "id": "disable_bitlocker_win11",
+  "name": "Desactiver BitLocker (Win11)",
+  "description": "Deverrouille un disque chiffre par BitLocker avec la cle de recuperation, puis desactive le chiffrement BitLocker sur le lecteur C: via WinRE sous Windows 11.",
+  "category": "SECURITY",
+  "os": ["WIN11"],
+  "difficulty": "ADVANCED",
+  "estimatedMinutes": 15,
+  "requiresRoot": true,
+  "icon": "lock_open",
+  "warningMessage": "Vous devez disposer de la cle de recuperation BitLocker (48 chiffres). Sans cette cle, l'operation est impossible.",
+  "inputFields": [
+    {
+      "id": "recovery_key",
+      "label": "Cle de recuperation BitLocker",
+      "placeholder": "000000-000000-000000-000000-000000-000000-000000-000000",
+      "required": true,
+      "inputType": "TEXT"
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Preparation du PC cible",
+      "instruction": "Branchez le telephone en USB au PC eteint. Appuyez sur le bouton power du PC.",
+      "instructionDetail": "La cle de recuperation BitLocker se trouve generalement dans votre compte Microsoft (account.microsoft.com/devices/recoverykey), sur un document imprime ou sur une cle USB. Sous Windows 11, BitLocker est souvent active par defaut.",
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "criticalStep": false
+    },
+    {
+      "id": 2,
+      "title": "Acces a WinRE via F8",
+      "instruction": "Le telephone va spammer la touche F8 pour forcer l'entree dans l'environnement de recuperation Windows 11.",
+      "instructionDetail": "Sur Windows 11, l'acces a WinRE peut necessiter plusieurs tentatives. Si le menu n'apparait pas, forcez l'arret du PC 3 fois de suite pour declencher la reparation automatique.",
+      "waitBeforeSendMs": 3000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        { "type": "repeat", "key": "F8", "count": 15, "delayBetweenMs": 150 }
+      ],
+      "retryable": true,
+      "retryInstruction": "Eteignez le PC en maintenant le bouton power 10 secondes, puis relancez cette etape.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Naviguer vers l'invite de commandes",
+      "instruction": "Dans le menu de recuperation Windows 11, selectionnez Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "L'interface WinRE de Windows 11 a un design bleu. Naviguez avec la souris ou le clavier. Windows 11 peut demander la cle BitLocker avant d'acceder a certaines options.",
+      "confirmQuestion": "L'invite de commandes (ecran noir avec curseur clignotant) est-elle affichee ?",
+      "waitAfterSendMs": 3000,
+      "actions": [],
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Deverrouiller le lecteur avec la cle de recuperation",
+      "instruction": "Deverrouillage du lecteur C: avec la cle de recuperation BitLocker.",
+      "instructionDetail": "Cette commande utilise votre cle de recuperation a 48 chiffres pour deverrouiller le volume chiffre. Verifiez que la cle saisie est correcte.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        { "type": "template", "template": "manage-bde -unlock C: -RecoveryPassword {{recovery_key}}\n", "delayBetweenCharsMs": 40 }
+      ],
+      "confirmQuestion": "Le message indique-t-il que le volume a ete deverrouille avec succes ?",
+      "retryable": true,
+      "retryInstruction": "Verifiez que la cle de recuperation est correcte et relancez cette etape.",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Verifier le statut BitLocker",
+      "instruction": "Verification du statut actuel de BitLocker sur le lecteur C:.",
+      "instructionDetail": "Cette commande affiche l'etat du chiffrement. Le statut devrait indiquer que le volume est deverrouille.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        { "type": "string", "value": "manage-bde -status C:", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "criticalStep": false
+    },
+    {
+      "id": 6,
+      "title": "Desactiver BitLocker",
+      "instruction": "Desactivation du chiffrement BitLocker sur le lecteur C:.",
+      "instructionDetail": "Le dechiffrement complet du disque peut prendre de 30 minutes a plusieurs heures selon la taille du disque. Le PC doit rester allume pendant tout le processus.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        { "type": "string", "value": "manage-bde -off C:", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "confirmQuestion": "Le message confirme-t-il que le dechiffrement est en cours ?",
+      "criticalStep": true
+    },
+    {
+      "id": 7,
+      "title": "Fermeture et redemarrage",
+      "instruction": "Fermez l'invite de commandes et redemarrez le PC normalement.",
+      "instructionDetail": "Le dechiffrement continuera en arriere-plan apres le redemarrage. Sous Windows 11, vous pouvez suivre la progression dans Parametres > Confidentialite et securite > Chiffrement de l'appareil.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "exit", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "criticalStep": false
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+# Build outputs
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+/build/
+/app/build/
+/captures/
+
+# Gradle
+.gradle/
+/gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.properties
+
+# IDE
+*.iml
+.idea/
+*.swp
+*.swo
+*~
+
+# Local properties
+local.properties
+
+# Android
+.externalNativeBuild/
+.cxx/
+
+# Logs
+*.log
+*.hprof
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Prompts (meta-prompts de dev, pas du code)
+.prompts/
+
+# Claude memory
+.claude/
+
+# Temp
+*.bak
+*.bak.*
+*.tmp

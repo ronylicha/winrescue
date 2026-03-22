@@ -1,0 +1,97 @@
+{
+  "id": "enable_rdp_win10",
+  "name": "Activer Bureau a distance RDP (Win10)",
+  "description": "Active le Bureau a distance (Remote Desktop Protocol) et ouvre le port dans le pare-feu Windows. Ce script fonctionne depuis Windows demarre, pas depuis WinRE.",
+  "category": "NETWORK",
+  "os": ["WIN10"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 3,
+  "requiresRoot": true,
+  "icon": "desktop_windows",
+  "warningMessage": "Ce script fonctionne uniquement si Windows est demarre normalement. L'activation du Bureau a distance expose votre PC sur le reseau. Assurez-vous que le pare-feu reseau est configure correctement.",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Preparation",
+      "instruction": "Branchez le telephone en USB au PC sous Windows 10 demarre et connecte a une session utilisateur.",
+      "instructionDetail": "Le PC doit etre allume et sur le bureau Windows. Ce script n'utilise pas WinRE.",
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "criticalStep": false
+    },
+    {
+      "id": 2,
+      "title": "Ouvrir l'invite de commandes en administrateur",
+      "instruction": "Ouverture du menu Power User avec WIN+X pour acceder a l'invite de commandes administrateur.",
+      "instructionDetail": "Le menu Power User apparait en bas a gauche de l'ecran. Selectionnez 'Invite de commandes (admin)' ou 'Windows PowerShell (admin)'.",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "combination", "keys": ["LEFT_META", "X"] },
+        { "type": "wait", "ms": 1500 },
+        { "type": "key", "key": "A" }
+      ],
+      "confirmQuestion": "La fenetre d'invite de commandes administrateur est-elle ouverte (titre affichant 'Administrateur') ?",
+      "retryable": true,
+      "retryInstruction": "Si le menu n'apparait pas, faites clic droit sur le bouton Demarrer et selectionnez 'Invite de commandes (admin)'.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Accepter le controle de compte utilisateur",
+      "instruction": "Si une fenetre de controle de compte utilisateur (UAC) apparait, appuyez sur ALT+O pour accepter.",
+      "instructionDetail": "La fenetre UAC demande l'autorisation d'executer le programme en tant qu'administrateur. Cliquez sur Oui ou appuyez sur ALT+O.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "combination", "keys": ["ALT", "O"] }
+      ],
+      "criticalStep": false
+    },
+    {
+      "id": 4,
+      "title": "Activer le Bureau a distance dans le registre",
+      "instruction": "Modification du registre Windows pour activer le Bureau a distance.",
+      "instructionDetail": "Cette commande definit la valeur fDenyTSConnections a 0, ce qui autorise les connexions Bureau a distance.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "reg add \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 0 /f", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "confirmQuestion": "Le message 'L'operation a reussi' est-il affiche ?",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Ouvrir le port RDP dans le pare-feu",
+      "instruction": "Activation de la regle de pare-feu pour autoriser les connexions Bureau a distance.",
+      "instructionDetail": "Cette commande active le groupe de regles 'Bureau a distance' dans le pare-feu Windows, ouvrant le port 3389.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "netsh advfirewall firewall set rule group=\"remote desktop\" new enable=Yes", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "confirmQuestion": "Le message indique-t-il que les regles ont ete mises a jour ?",
+      "criticalStep": true
+    },
+    {
+      "id": 6,
+      "title": "Verification et fermeture",
+      "instruction": "Verification que le Bureau a distance est bien active et fermeture de l'invite de commandes.",
+      "instructionDetail": "La commande affiche la valeur actuelle de fDenyTSConnections. Si elle vaut 0x0, le Bureau a distance est active. Vous pouvez maintenant vous connecter a ce PC avec l'application Bureau a distance.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "reg query \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" },
+        { "type": "wait", "ms": 2000 },
+        { "type": "string", "value": "exit", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "criticalStep": false
+    }
+  ]
+}

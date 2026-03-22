@@ -1,0 +1,120 @@
+{
+  "id": "enable_hidden_admin_win11",
+  "name": "Activer le compte Administrateur cache Windows 11",
+  "description": "Active le compte Administrateur integre (cache par defaut) de Windows 11 et definit son mot de passe via l'environnement de recuperation (WinRE).",
+  "category": "ADMIN",
+  "os": ["WIN11"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 10,
+  "requiresRoot": true,
+  "icon": "admin_panel_settings",
+  "warningMessage": "Le compte Administrateur integre a des privileges eleves. Pensez a le desactiver apres utilisation pour des raisons de securite.",
+  "inputFields": [
+    {
+      "id": "admin_password",
+      "label": "Mot de passe pour le compte Administrateur",
+      "type": "PASSWORD",
+      "placeholder": "Mot de passe",
+      "required": true,
+      "defaultValue": null
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Eteindre le PC et brancher le telephone",
+      "instruction": "Eteignez completement le PC cible. Branchez votre telephone Android via un cable USB-C/OTG au PC eteint.",
+      "instructionDetail": "Le PC doit etre totalement eteint (pas en veille). Le cable OTG permet a votre telephone d'agir comme un clavier physique.",
+      "imageHint": "hint_power_off_and_usb",
+      "confirmQuestion": "Le PC est eteint et le telephone est branche en USB ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Forcer l'entree en mode recuperation",
+      "instruction": "Allumez le PC. Des que le logo du fabricant ou le logo Windows apparait, maintenez le bouton power pendant 10 secondes pour forcer l'extinction. Repetez cette operation 3 fois de suite.",
+      "instructionDetail": "Windows 11 ne supporte pas F8. La methode fiable est de forcer 3 extinctions consecutives pendant le boot pour declencher la reparation automatique.",
+      "imageHint": "hint_force_shutdown_3_times",
+      "confirmQuestion": "Voyez-vous l'ecran 'Reparation automatique' ou 'Choisir une option' ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 5000,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Recommencez les 3 extinctions forcees. Attendez que le logo apparaisse a chaque fois avant d'eteindre.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Ouvrir l'invite de commandes via WinRE",
+      "instruction": "Naviguez vers Depannage > Options avancees > Invite de commandes. Si sur 'Reparation automatique', cliquez d'abord sur 'Options avancees'.",
+      "instructionDetail": "L'invite de commandes WinRE a les privileges necessaires pour activer le compte Administrateur cache.",
+      "imageHint": "hint_winre_navigate_to_cmd_win11",
+      "confirmQuestion": "L'invite de commandes (fenetre noire) est-elle ouverte ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 15000,
+      "actions": [
+        {"type": "key", "key": "TAB", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "TAB", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "TAB", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "TAB", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Naviguez manuellement via les tuiles : Depannage > Options avancees > Invite de commandes.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Activer le compte Administrateur cache",
+      "instruction": "La commande pour activer le compte Administrateur integre va etre envoyee.",
+      "instructionDetail": "La commande 'net user administrator /active:yes' active le compte Administrateur desactive par defaut. Ce compte a des privileges complets sans controle UAC.",
+      "imageHint": "hint_cmd_enable_admin",
+      "confirmQuestion": "Le message 'La commande s'est terminee correctement.' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "string", "value": "net user administrator /active:yes", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si 'administrator' n'est pas reconnu, essayez 'administrateur' (nom localise en francais) : net user administrateur /active:yes",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Definir le mot de passe et redemarrer",
+      "instruction": "La commande pour definir le mot de passe va etre envoyee, puis le PC sera redemarre.",
+      "instructionDetail": "Par securite, il est important de definir un mot de passe sur le compte Administrateur. Apres le redemarrage, le compte 'Administrateur' apparaitra sur l'ecran de connexion Windows 11.",
+      "imageHint": "hint_cmd_set_password",
+      "confirmQuestion": "Le message 'La commande s'est terminee correctement.' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "template", "template": "net user administrator {{admin_password}}", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "string", "value": "exit", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Verifiez que le mot de passe respecte la politique de complexite (8+ caracteres, majuscule, chiffre).",
+      "criticalStep": true
+    }
+  ]
+}

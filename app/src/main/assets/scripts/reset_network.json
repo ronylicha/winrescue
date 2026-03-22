@@ -1,0 +1,127 @@
+{
+  "id": "reset_network",
+  "name": "Reset complet de la pile reseau",
+  "description": "Reinitialise completement la configuration reseau de Windows : Winsock, pile TCP/IP, cache DNS et proxy. Resout les problemes de connexion internet, Wi-Fi, et erreurs reseau.",
+  "category": "NETWORK",
+  "os": ["WIN10", "WIN11"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 5,
+  "requiresRoot": true,
+  "icon": "wifi",
+  "warningMessage": null,
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Ouvrir l'invite de commandes en administrateur",
+      "instruction": "Ouvrez l'invite de commandes en tant qu'administrateur. Appuyez sur Win+R, tapez 'cmd', puis appuyez sur Ctrl+Maj+Entree pour l'executer en administrateur.",
+      "instructionDetail": "Les commandes de reinitialisation reseau necessitent les privileges administrateur. Si la fenetre UAC apparait, confirmez avec 'Oui'.",
+      "imageHint": "hint_cmd_admin",
+      "confirmQuestion": "L'invite de commandes administrateur est-elle ouverte (titre affichant 'Administrateur') ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Methode alternative : clic droit sur le menu Demarrer > Terminal (admin) ou Invite de commandes (admin).",
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Reinitialiser Winsock",
+      "instruction": "La commande netsh winsock reset va reinitialiser le catalogue Winsock a son etat par defaut.",
+      "instructionDetail": "Winsock est l'interface entre les applications et le reseau. Sa reinitialisation corrige les problemes causes par des logiciels malveillants ou des configurations corrompues.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "Le message 'Le catalogue Winsock a ete reinitialise' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "netsh winsock reset", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Verifiez que l'invite de commandes est bien en mode administrateur.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Reinitialiser la pile TCP/IP",
+      "instruction": "La commande netsh int ip reset va reinitialiser la configuration TCP/IP.",
+      "instructionDetail": "Cette commande reecrit les cles de registre liees a TCP/IP, corrigeant les problemes d'adressage IP et de configuration reseau.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "La commande s'est-elle terminee sans erreur ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "netsh int ip reset", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si une erreur apparait, redemarrez le PC et relancez le script.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Liberer l'adresse IP et vider le cache DNS",
+      "instruction": "Les commandes ipconfig vont liberer l'adresse IP actuelle et vider le cache DNS.",
+      "instructionDetail": "ipconfig /release libere l'adresse IP obtenue par DHCP. ipconfig /flushdns vide le cache de resolution de noms de domaine, utile si des sites ne se chargent plus.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "Les commandes se sont-elles executees sans erreur ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "ipconfig /release", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "string", "value": "ipconfig /flushdns", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    },
+    {
+      "id": 5,
+      "title": "Renouveler l'adresse IP et reinitialiser le proxy",
+      "instruction": "Les commandes vont obtenir une nouvelle adresse IP et reinitialiser les parametres de proxy.",
+      "instructionDetail": "ipconfig /renew demande une nouvelle adresse IP au serveur DHCP. netsh winhttp reset proxy supprime tout proxy HTTP configure, utile si un malware a modifie les parametres de proxy.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "Les commandes se sont-elles executees sans erreur ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "ipconfig /renew", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 5000},
+        {"type": "string", "value": "netsh winhttp reset proxy", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si ipconfig /renew echoue, verifiez que le cable reseau est branche ou que le Wi-Fi est active.",
+      "criticalStep": false
+    },
+    {
+      "id": 6,
+      "title": "Redemarrer le PC",
+      "instruction": "La reinitialisation reseau est terminee. Redemarrez le PC pour appliquer tous les changements. Apres le redemarrage, vous devrez peut-etre vous reconnecter a votre reseau Wi-Fi.",
+      "instructionDetail": "Certains changements (notamment Winsock et TCP/IP) ne prennent effet qu'apres un redemarrage complet. Vos parametres Wi-Fi enregistres seront conserves.",
+      "imageHint": "hint_restart_pc",
+      "confirmQuestion": "Le PC a-t-il redemarre et la connexion internet fonctionne-t-elle ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "string", "value": "shutdown /r /t 10", "delayBetweenCharsMs": 35},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    }
+  ]
+}

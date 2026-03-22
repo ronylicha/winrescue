@@ -1,0 +1,95 @@
+{
+  "id": "factory_reset_win10",
+  "name": "Reinitialisation usine Windows 10",
+  "description": "Reinitialise completement Windows 10 a son etat d'usine via l'environnement de recuperation (WinRE). Permet de choisir entre conserver ou supprimer les fichiers personnels.",
+  "category": "RECOVERY",
+  "os": ["WIN10"],
+  "difficulty": "ADVANCED",
+  "estimatedMinutes": 45,
+  "requiresRoot": true,
+  "icon": "restart_alt",
+  "warningMessage": "OPERATION IRREVERSIBLE. Toutes vos donnees seront perdues si vous choisissez 'Supprimer tout'.",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Acceder a l'environnement de recuperation",
+      "instruction": "Demarrez le PC en mode recuperation (WinRE). Forcez 3 extinctions consecutives au demarrage si necessaire : allumez le PC, quand le logo Windows apparait maintenez le bouton power 10s. Repetez 3 fois.",
+      "instructionDetail": "Windows 10 lance automatiquement l'environnement de recuperation apres 3 echecs de demarrage consecutifs. C'est la methode la plus fiable.",
+      "imageHint": "hint_winre_menu",
+      "confirmQuestion": "Voyez-vous l'ecran bleu 'Choisir une option' ou 'Reparation automatique' ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Forcez 3 extinctions au demarrage : allumez le PC, quand le logo Windows apparait maintenez le bouton power 10s. Repetez 3 fois.",
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Naviguer vers Depannage",
+      "instruction": "Sur l'ecran 'Choisir une option', selectionnez 'Depannage' avec les fleches et appuyez sur Entree.",
+      "instructionDetail": "Si vous voyez 'Reparation automatique', cliquez d'abord sur 'Options avancees' puis revenez a 'Depannage'.",
+      "imageHint": "hint_winre_choose_option",
+      "confirmQuestion": "Etes-vous sur l'ecran 'Depannage' ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Utilisez les fleches haut/bas pour selectionner 'Depannage' puis appuyez sur Entree.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Selectionner 'Reinitialiser ce PC'",
+      "instruction": "Sur l'ecran 'Depannage', selectionnez 'Reinitialiser ce PC' et appuyez sur Entree.",
+      "instructionDetail": "L'option 'Reinitialiser ce PC' permet de reinstaller Windows en conservant ou en supprimant vos fichiers personnels.",
+      "imageHint": "hint_winre_troubleshoot",
+      "confirmQuestion": "Voyez-vous les options 'Conserver mes fichiers' et 'Supprimer tout' ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Naviguez avec les fleches pour trouver 'Reinitialiser ce PC' et appuyez sur Entree.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Choisir le type de reinitialisation",
+      "instruction": "Choisissez 'Conserver mes fichiers' (garde vos documents, supprime les applis) OU 'Supprimer tout' (efface tout). Utilisez les fleches pour selectionner et appuyez sur Entree.",
+      "instructionDetail": "'Conserver mes fichiers' : vos documents, photos et fichiers personnels sont preserves mais toutes les applications installees seront supprimees. 'Supprimer tout' : reinitialisation complete, comme un PC neuf. ATTENTION : 'Supprimer tout' est irreversible.",
+      "imageHint": "hint_factory_reset_choice",
+      "confirmQuestion": "Avez-vous fait votre choix et appuye sur Entree ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 5000,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Utilisez les fleches haut/bas pour selectionner votre choix puis appuyez sur Entree.",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Confirmer et lancer la reinitialisation",
+      "instruction": "Confirmez la reinitialisation en selectionnant 'Reinitialiser' sur l'ecran de confirmation. Le processus peut prendre 30 minutes a 1 heure. Ne debranchez pas le PC.",
+      "instructionDetail": "Windows va se reinstaller automatiquement. Le PC redemarrera plusieurs fois pendant le processus. A la fin, vous arriverez sur l'ecran de configuration initiale de Windows.",
+      "imageHint": "hint_factory_reset_confirm",
+      "confirmQuestion": "La reinitialisation est-elle en cours (barre de progression visible) ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "key", "key": "TAB", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "id": "recover_files_win10",
+  "name": "Recuperer les fichiers utilisateur (Win10)",
+  "description": "Copie les fichiers Documents, Images, Bureau et Telechargements d'un compte utilisateur vers une cle USB externe via l'invite de commandes WinRE.",
+  "category": "RECOVERY",
+  "os": ["WIN10"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 10,
+  "requiresRoot": true,
+  "icon": "folder_copy",
+  "warningMessage": "Branchez une cle USB supplementaire sur le PC avant de commencer.",
+  "inputFields": [
+    {
+      "id": "username",
+      "label": "Nom d'utilisateur Windows",
+      "placeholder": "Ex: Jean",
+      "required": true,
+      "inputType": "TEXT"
+    },
+    {
+      "id": "drive_letter",
+      "label": "Lettre du lecteur USB de destination",
+      "placeholder": "E",
+      "defaultValue": "E",
+      "required": true,
+      "inputType": "LETTER"
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Preparation du PC cible",
+      "instruction": "Branchez le telephone en USB au PC eteint. Branchez egalement la cle USB de destination. Appuyez ensuite sur le bouton power du PC.",
+      "instructionDetail": "Assurez-vous que la cle USB de destination dispose de suffisamment d'espace libre pour contenir les fichiers a recuperer.",
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "criticalStep": false
+    },
+    {
+      "id": 2,
+      "title": "Acces a WinRE via F8",
+      "instruction": "Le telephone va spammer la touche F8 pour forcer l'entree dans l'environnement de recuperation Windows.",
+      "instructionDetail": "Si le menu de recuperation n'apparait pas, eteignez le PC et recommencez.",
+      "waitBeforeSendMs": 3000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        { "type": "repeat", "key": "F8", "count": 15, "delayBetweenMs": 150 }
+      ],
+      "retryable": true,
+      "retryInstruction": "Eteignez le PC, puis relancez cette etape.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Naviguer vers l'invite de commandes",
+      "instruction": "Dans le menu de recuperation, selectionnez Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "Utilisez les fleches du clavier ou la souris pour naviguer dans les menus WinRE.",
+      "confirmQuestion": "L'invite de commandes (ecran noir avec curseur clignotant) est-elle affichee ?",
+      "waitAfterSendMs": 3000,
+      "actions": [],
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Identifier les volumes avec diskpart",
+      "instruction": "Lancement de diskpart pour identifier la lettre du lecteur systeme et du lecteur USB.",
+      "instructionDetail": "Verifiez dans la liste des volumes que le lecteur systeme (souvent C:) et votre cle USB sont bien presents. Notez les lettres attribuees.",
+      "waitAfterSendMs": 5000,
+      "actions": [
+        { "type": "string", "value": "diskpart", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" },
+        { "type": "wait", "ms": 3000 },
+        { "type": "string", "value": "list volume", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" },
+        { "type": "wait", "ms": 3000 },
+        { "type": "string", "value": "exit", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "confirmQuestion": "Avez-vous identifie la lettre du lecteur systeme et celle de votre cle USB ?",
+      "criticalStep": false
+    },
+    {
+      "id": 5,
+      "title": "Copie des fichiers utilisateur vers la cle USB",
+      "instruction": "Copie des dossiers Documents, Images, Bureau et Telechargements vers la cle USB.",
+      "instructionDetail": "L'operation peut prendre plusieurs minutes selon le volume de donnees. Ne debranchez pas la cle USB pendant la copie.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        { "type": "template", "template": "xcopy C:\\Users\\{{username}}\\Documents\\* {{drive_letter}}:\\RecoveredFiles\\Documents\\ /E /H /C /I\n", "delayBetweenCharsMs": 40 },
+        { "type": "wait", "ms": 10000 },
+        { "type": "template", "template": "xcopy C:\\Users\\{{username}}\\Desktop\\* {{drive_letter}}:\\RecoveredFiles\\Desktop\\ /E /H /C /I\n", "delayBetweenCharsMs": 40 },
+        { "type": "wait", "ms": 10000 },
+        { "type": "template", "template": "xcopy C:\\Users\\{{username}}\\Pictures\\* {{drive_letter}}:\\RecoveredFiles\\Pictures\\ /E /H /C /I\n", "delayBetweenCharsMs": 40 },
+        { "type": "wait", "ms": 10000 },
+        { "type": "template", "template": "xcopy C:\\Users\\{{username}}\\Downloads\\* {{drive_letter}}:\\RecoveredFiles\\Downloads\\ /E /H /C /I\n", "delayBetweenCharsMs": 40 }
+      ],
+      "criticalStep": true
+    },
+    {
+      "id": 6,
+      "title": "Verification et fermeture",
+      "instruction": "Verifiez que les fichiers ont bien ete copies sur la cle USB, puis fermez l'invite de commandes.",
+      "instructionDetail": "Tapez dir suivi de la lettre de votre cle USB pour verifier le contenu. Vous pouvez ensuite retirer la cle USB en toute securite.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "template", "template": "dir {{drive_letter}}:\\RecoveredFiles\\\n", "delayBetweenCharsMs": 40 },
+        { "type": "wait", "ms": 3000 },
+        { "type": "string", "value": "exit", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "criticalStep": false
+    }
+  ]
+}

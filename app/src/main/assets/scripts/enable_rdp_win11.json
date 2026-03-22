@@ -1,0 +1,97 @@
+{
+  "id": "enable_rdp_win11",
+  "name": "Activer Bureau a distance RDP (Win11)",
+  "description": "Active le Bureau a distance (Remote Desktop Protocol) et ouvre le port dans le pare-feu Windows 11. Ce script fonctionne depuis Windows demarre, pas depuis WinRE.",
+  "category": "NETWORK",
+  "os": ["WIN11"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 3,
+  "requiresRoot": true,
+  "icon": "desktop_windows",
+  "warningMessage": "Ce script fonctionne uniquement si Windows 11 est demarre normalement. L'activation du Bureau a distance expose votre PC sur le reseau. Assurez-vous que le pare-feu reseau est configure correctement.",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Preparation",
+      "instruction": "Branchez le telephone en USB au PC sous Windows 11 demarre et connecte a une session utilisateur.",
+      "instructionDetail": "Le PC doit etre allume et sur le bureau Windows 11. Ce script n'utilise pas WinRE.",
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "criticalStep": false
+    },
+    {
+      "id": 2,
+      "title": "Ouvrir le Terminal Windows en administrateur",
+      "instruction": "Ouverture du menu Power User avec WIN+X pour acceder au Terminal Windows administrateur.",
+      "instructionDetail": "Sous Windows 11, le menu Power User propose 'Terminal (Administrateur)' au lieu de 'Invite de commandes (admin)'.",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "combination", "keys": ["LEFT_META", "X"] },
+        { "type": "wait", "ms": 1500 },
+        { "type": "key", "key": "A" }
+      ],
+      "confirmQuestion": "Le Terminal Windows administrateur est-il ouvert (titre affichant 'Administrateur') ?",
+      "retryable": true,
+      "retryInstruction": "Si le menu n'apparait pas, faites clic droit sur le bouton Demarrer et selectionnez 'Terminal (Administrateur)'.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Accepter le controle de compte utilisateur",
+      "instruction": "Si une fenetre de controle de compte utilisateur (UAC) apparait, appuyez sur ALT+O pour accepter.",
+      "instructionDetail": "La fenetre UAC demande l'autorisation d'executer le programme en tant qu'administrateur. Cliquez sur Oui ou appuyez sur ALT+O.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "combination", "keys": ["ALT", "O"] }
+      ],
+      "criticalStep": false
+    },
+    {
+      "id": 4,
+      "title": "Activer le Bureau a distance dans le registre",
+      "instruction": "Modification du registre Windows pour activer le Bureau a distance.",
+      "instructionDetail": "Cette commande definit la valeur fDenyTSConnections a 0, ce qui autorise les connexions Bureau a distance.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "reg add \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections /t REG_DWORD /d 0 /f", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "confirmQuestion": "Le message 'L'operation a reussi' est-il affiche ?",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Ouvrir le port RDP dans le pare-feu",
+      "instruction": "Activation de la regle de pare-feu pour autoriser les connexions Bureau a distance.",
+      "instructionDetail": "Cette commande active le groupe de regles 'Bureau a distance' dans le pare-feu Windows, ouvrant le port 3389.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "netsh advfirewall firewall set rule group=\"remote desktop\" new enable=Yes", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "confirmQuestion": "Le message indique-t-il que les regles ont ete mises a jour ?",
+      "criticalStep": true
+    },
+    {
+      "id": 6,
+      "title": "Verification et fermeture",
+      "instruction": "Verification que le Bureau a distance est bien active et fermeture du terminal.",
+      "instructionDetail": "La commande affiche la valeur actuelle de fDenyTSConnections. Si elle vaut 0x0, le Bureau a distance est active. Sous Windows 11, vous pouvez aussi verifier dans Parametres > Systeme > Bureau a distance.",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 3000,
+      "actions": [
+        { "type": "string", "value": "reg query \"HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\Terminal Server\" /v fDenyTSConnections", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" },
+        { "type": "wait", "ms": 2000 },
+        { "type": "string", "value": "exit", "delayBetweenCharsMs": 40 },
+        { "type": "key", "key": "ENTER" }
+      ],
+      "criticalStep": false
+    }
+  ]
+}

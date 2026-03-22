@@ -1,0 +1,167 @@
+{
+  "id": "repair_boot_win10",
+  "name": "Reparer le demarrage Windows 10",
+  "description": "Repare le secteur de demarrage (MBR/BCD) de Windows 10 en utilisant les commandes bootrec via l'environnement de recuperation (WinRE).",
+  "category": "REPAIR",
+  "os": ["WIN10"],
+  "difficulty": "ADVANCED",
+  "estimatedMinutes": 20,
+  "requiresRoot": true,
+  "icon": "build",
+  "warningMessage": "Operation avancee. Sauvegardez vos donnees si possible avant de reparer le demarrage. En cas d'echec, le PC pourrait ne plus demarrer du tout.",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Eteindre le PC et brancher le telephone",
+      "instruction": "Eteignez completement le PC cible. Branchez votre telephone Android via un cable USB-C/OTG au PC eteint.",
+      "instructionDetail": "Le PC doit etre totalement eteint. Le cable OTG permet a votre telephone d'agir comme un clavier physique pour envoyer les commandes de reparation.",
+      "imageHint": "hint_power_off_and_usb",
+      "confirmQuestion": "Le PC est eteint et le telephone est branche en USB ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Demarrer en mode recuperation",
+      "instruction": "Allumez le PC. L'application va envoyer la touche F8 en rafale. Si le PC ne demarre pas du tout (ecran noir, boucle de redemarrage), WinRE devrait se lancer automatiquement.",
+      "instructionDetail": "Si Windows ne demarre plus, WinRE est generalement lance automatiquement. Sinon, F8 ou 3 extinctions forcees permettent d'y acceder.",
+      "imageHint": "hint_press_power_button",
+      "confirmQuestion": "Voyez-vous l'ecran 'Choisir une option', 'Reparation automatique', ou le menu de demarrage avance ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        {"type": "repeat", "key": "F8", "count": 50, "delayBetweenMs": 150}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si le PC boucle ou reste sur un ecran noir, forcez 3 extinctions au demarrage pour declencher WinRE.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Ouvrir l'invite de commandes via WinRE",
+      "instruction": "Naviguez vers Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "Les commandes bootrec necessitent l'invite de commandes WinRE avec les privileges SYSTEM.",
+      "imageHint": "hint_winre_navigate_to_cmd",
+      "confirmQuestion": "L'invite de commandes (fenetre noire) est-elle ouverte ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 15000,
+      "actions": [
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Naviguez manuellement : Depannage > Options avancees > Invite de commandes.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Reparer le MBR (Master Boot Record)",
+      "instruction": "La commande 'bootrec /fixmbr' va etre envoyee pour reparer le secteur de demarrage principal.",
+      "instructionDetail": "Le MBR contient le code qui lance le chargement de Windows. S'il est corrompu, le PC ne peut pas demarrer. Cette commande le reecrit avec un MBR Windows standard.",
+      "imageHint": "hint_cmd_bootrec",
+      "confirmQuestion": "Le message 'L'operation a reussi.' ou 'The operation completed successfully.' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        {"type": "string", "value": "bootrec /fixmbr", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si une erreur 'Acces refuse' apparait, verifiez que vous etes bien dans l'invite de commandes WinRE et non dans une session normale.",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Reparer le secteur de boot",
+      "instruction": "La commande 'bootrec /fixboot' va etre envoyee pour reecrire le secteur de demarrage de la partition systeme.",
+      "instructionDetail": "Le secteur de boot de la partition contient le code qui charge le noyau Windows. Cette commande le repare s'il est corrompu ou manquant.",
+      "imageHint": "hint_cmd_bootrec",
+      "confirmQuestion": "Le message 'L'operation a reussi.' est-il affiche ? (Un message 'Acces refuse' est possible sur certains systemes UEFI, continuez quand meme.)",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        {"type": "string", "value": "bootrec /fixboot", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si 'Acces refuse', ce n'est pas bloquant sur les systemes UEFI modernes. Continuez avec les etapes suivantes.",
+      "criticalStep": false
+    },
+    {
+      "id": 6,
+      "title": "Scanner les installations Windows",
+      "instruction": "La commande 'bootrec /scanos' va scanner le disque pour trouver les installations Windows presentes.",
+      "instructionDetail": "Cette commande recherche toutes les installations Windows sur les disques connectes. Elle permet de verifier que le systeme est detecte avant de reconstruire le BCD.",
+      "imageHint": "hint_cmd_bootrec_scan",
+      "confirmQuestion": "Le scan affiche-t-il au moins une installation Windows detectee ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 15000,
+      "actions": [
+        {"type": "string", "value": "bootrec /scanos", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si aucune installation n'est detectee, le disque dur pourrait etre endommage ou deconnecte. Verifiez les branchements.",
+      "criticalStep": true
+    },
+    {
+      "id": 7,
+      "title": "Reconstruire le BCD (Boot Configuration Data)",
+      "instruction": "La commande 'bootrec /rebuildbcd' va reconstruire la base de donnees de configuration de demarrage. Repondez 'O' (ou 'Y' en anglais) si on vous demande d'ajouter une installation.",
+      "instructionDetail": "Le BCD contient les parametres de demarrage de Windows. S'il est corrompu, Windows ne sait pas comment demarrer. La reconstruction le regenere a partir des installations detectees.",
+      "imageHint": "hint_cmd_rebuildbcd",
+      "confirmQuestion": "La reconstruction du BCD s'est-elle terminee avec succes ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 15000,
+      "actions": [
+        {"type": "string", "value": "bootrec /rebuildbcd", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 10000},
+        {"type": "string", "value": "O", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si on vous demande d'ajouter l'installation a la liste de demarrage, tapez 'O' (francais) ou 'Y' (anglais) et appuyez sur Entree.",
+      "criticalStep": true
+    },
+    {
+      "id": 8,
+      "title": "Fermer et redemarrer",
+      "instruction": "Tapez 'exit' pour fermer l'invite de commandes, puis selectionnez 'Continuer' pour redemarrer Windows.",
+      "instructionDetail": "Si la reparation a reussi, Windows devrait demarrer normalement. Si le probleme persiste, une reinstallation pourrait etre necessaire.",
+      "imageHint": "hint_restart_pc",
+      "confirmQuestion": "Le PC redemarre-t-il et Windows charge-t-il normalement ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "string", "value": "exit", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    }
+  ]
+}

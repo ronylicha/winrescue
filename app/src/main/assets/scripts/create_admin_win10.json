@@ -1,0 +1,144 @@
+{
+  "id": "create_admin_win10",
+  "name": "Creer un compte administrateur Windows 10",
+  "description": "Cree un nouveau compte utilisateur avec des privileges administrateur via l'environnement de recuperation (WinRE) et l'invite de commandes sur Windows 10.",
+  "category": "ADMIN",
+  "os": ["WIN10"],
+  "difficulty": "MEDIUM",
+  "estimatedMinutes": 12,
+  "requiresRoot": true,
+  "icon": "person_add",
+  "warningMessage": null,
+  "inputFields": [
+    {
+      "id": "admin_username",
+      "label": "Nom du nouveau compte",
+      "type": "TEXT",
+      "placeholder": "Ex: WinRescueAdmin",
+      "required": true,
+      "defaultValue": "WinRescueAdmin"
+    },
+    {
+      "id": "admin_password",
+      "label": "Mot de passe du nouveau compte",
+      "type": "PASSWORD",
+      "placeholder": "Mot de passe",
+      "required": true,
+      "defaultValue": null
+    }
+  ],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Eteindre le PC et brancher le telephone",
+      "instruction": "Eteignez completement le PC cible. Branchez votre telephone Android via un cable USB-C/OTG au PC eteint.",
+      "instructionDetail": "Le PC doit etre totalement eteint (pas en veille). Le cable OTG permet a votre telephone d'agir comme un clavier physique.",
+      "imageHint": "hint_power_off_and_usb",
+      "confirmQuestion": "Le PC est eteint et le telephone est branche en USB ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Demarrer en mode recuperation",
+      "instruction": "Allumez le PC. L'application va envoyer la touche F8 en rafale pour acceder aux options de demarrage avancees. Si cela ne fonctionne pas, forcez 3 extinctions consecutives au demarrage.",
+      "instructionDetail": "La touche F8 est envoyee rapidement pour intercepter le boot. Si le PC demarre normalement, eteignez-le en maintenant le bouton power et recommencez 3 fois pour forcer WinRE.",
+      "imageHint": "hint_press_power_button",
+      "confirmQuestion": "Voyez-vous l'ecran 'Choisir une option' ou 'Reparation automatique' ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        {"type": "repeat", "key": "F8", "count": 50, "delayBetweenMs": 150}
+      ],
+      "retryable": true,
+      "retryInstruction": "Eteignez le PC (maintenez power 10s), rallumez, et des que le logo apparait maintenez power 10s. Repetez 3 fois pour forcer la reparation automatique.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Naviguer vers Depannage > Options avancees > Invite de commandes",
+      "instruction": "Depuis l'ecran 'Choisir une option', naviguez vers Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "Nous devons acceder a l'invite de commandes avec les privileges SYSTEM pour creer un compte administrateur.",
+      "imageHint": "hint_winre_navigate_to_cmd",
+      "confirmQuestion": "L'invite de commandes (fenetre noire) est-elle ouverte ?",
+      "waitBeforeSendMs": 500,
+      "waitAfterSendMs": 15000,
+      "actions": [
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "DOWN_ARROW", "modifier": null},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Naviguez manuellement : Depannage > Options avancees > Invite de commandes. Si un compte est demande, selectionnez-le et laissez le mot de passe vide.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Creer le nouveau compte utilisateur",
+      "instruction": "La commande de creation du compte va etre envoyee automatiquement.",
+      "instructionDetail": "La commande 'net user /add' cree un nouveau compte local Windows. Le compte n'a pas encore de privileges administrateur a cette etape.",
+      "imageHint": "hint_cmd_create_user",
+      "confirmQuestion": "Le message 'La commande s'est terminee correctement.' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "template", "template": "net user {{admin_username}} {{admin_password}} /add", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si le compte existe deja, changez le nom d'utilisateur. Si une erreur de mot de passe apparait, utilisez un mot de passe plus complexe (majuscule, chiffre, 8 caracteres minimum).",
+      "criticalStep": true
+    },
+    {
+      "id": 5,
+      "title": "Ajouter le compte au groupe Administrateurs",
+      "instruction": "La commande pour accorder les privileges administrateur va etre envoyee.",
+      "instructionDetail": "La commande 'net localgroup administrators /add' ajoute le compte au groupe des administrateurs locaux, lui donnant un acces complet au systeme.",
+      "imageHint": "hint_cmd_add_admin",
+      "confirmQuestion": "Le message 'La commande s'est terminee correctement.' est-il affiche ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "template", "template": "net localgroup administrators {{admin_username}} /add", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si le groupe 'administrators' n'est pas reconnu, essayez 'Administrateurs' (nom localise en francais).",
+      "criticalStep": true
+    },
+    {
+      "id": 6,
+      "title": "Fermer et redemarrer",
+      "instruction": "Tapez 'exit' pour fermer l'invite de commandes, puis selectionnez 'Continuer' pour redemarrer Windows normalement.",
+      "instructionDetail": "Apres le redemarrage, le nouveau compte administrateur apparaitra sur l'ecran de connexion. Vous pourrez vous y connecter avec le mot de passe defini.",
+      "imageHint": "hint_restart_pc",
+      "confirmQuestion": "Le PC redemarre-t-il et le nouveau compte est-il visible sur l'ecran de connexion ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "string", "value": "exit", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": false
+    }
+  ]
+}

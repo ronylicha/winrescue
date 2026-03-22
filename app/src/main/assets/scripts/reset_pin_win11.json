@@ -1,0 +1,87 @@
+{
+  "id": "reset_pin_win11",
+  "name": "Reset PIN Windows Hello (Win11)",
+  "description": "Supprime les donnees Windows Hello (PIN, empreinte digitale, reconnaissance faciale) pour permettre une reconfiguration au prochain demarrage de Windows 11.",
+  "category": "RECOVERY",
+  "os": ["WIN11"],
+  "difficulty": "EASY",
+  "estimatedMinutes": 8,
+  "requiresRoot": true,
+  "icon": "pin_drop",
+  "warningMessage": "Necessite Windows 11. Supprime toutes les donnees Windows Hello (PIN, empreinte, visage).",
+  "inputFields": [],
+  "steps": [
+    {
+      "id": 1,
+      "title": "Acceder a l'invite de commandes WinRE",
+      "instruction": "Demarrez le PC en mode recuperation (WinRE) et ouvrez l'invite de commandes : Depannage > Options avancees > Invite de commandes.",
+      "instructionDetail": "Si vous ne savez pas comment acceder a WinRE, forcez 3 extinctions consecutives au demarrage (maintenez le bouton power pendant que Windows charge) pour declencher la reparation automatique.",
+      "imageHint": "hint_winre_cmd",
+      "confirmQuestion": "L'invite de commandes (fenetre noire) est-elle ouverte dans WinRE ?",
+      "waitBeforeSendMs": 0,
+      "waitAfterSendMs": 0,
+      "actions": [],
+      "retryable": true,
+      "retryInstruction": "Forcez 3 extinctions au demarrage : allumez le PC, quand le logo Windows apparait maintenez le bouton power 10s. Repetez 3 fois. Puis naviguez vers Depannage > Options avancees > Invite de commandes.",
+      "criticalStep": true
+    },
+    {
+      "id": 2,
+      "title": "Prendre possession du dossier NGC",
+      "instruction": "La commande takeown va s'executer pour prendre le controle du dossier contenant les donnees Windows Hello.",
+      "instructionDetail": "Le dossier NGC stocke les codes PIN, empreintes et donnees de reconnaissance faciale. Il faut d'abord en prendre possession avant de pouvoir le supprimer.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "La commande takeown s'est-elle terminee sans erreur ?",
+      "waitBeforeSendMs": 2000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        {"type": "string", "value": "takeown /f C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Microsoft\\NGC /r /d y", "delayBetweenCharsMs": 30},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si une erreur apparait, verifiez que la lettre du lecteur Windows est bien C:. Essayez 'dir C:\\Windows' pour verifier.",
+      "criticalStep": true
+    },
+    {
+      "id": 3,
+      "title": "Accorder les permissions administrateur",
+      "instruction": "La commande icacls va accorder les droits complets aux administrateurs sur le dossier NGC.",
+      "instructionDetail": "Cette etape donne les permissions necessaires pour supprimer le dossier dans l'etape suivante.",
+      "imageHint": "hint_cmd_typing",
+      "confirmQuestion": "Le message indique-t-il que les fichiers ont ete traites avec succes ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 8000,
+      "actions": [
+        {"type": "string", "value": "icacls C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Microsoft\\NGC /grant administrators:F /t", "delayBetweenCharsMs": 30},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": true,
+      "retryInstruction": "Si l'erreur persiste, verifiez que l'etape precedente (takeown) s'est bien terminee.",
+      "criticalStep": true
+    },
+    {
+      "id": 4,
+      "title": "Supprimer le dossier NGC et redemarrer",
+      "instruction": "Le dossier NGC va etre supprime, puis le PC redemarrera. Au prochain demarrage, Windows vous demandera de reconfigurer votre PIN.",
+      "instructionDetail": "Apres suppression, toutes les methodes de connexion Windows Hello sont effacees. Vous devrez vous connecter avec votre mot de passe Microsoft ou local, puis reconfigurer un nouveau PIN.",
+      "imageHint": "hint_restart_pc",
+      "confirmQuestion": "Le PC a-t-il redemarre et demande-t-il de configurer un nouveau PIN ?",
+      "waitBeforeSendMs": 1000,
+      "waitAfterSendMs": 5000,
+      "actions": [
+        {"type": "string", "value": "rd /s /q C:\\Windows\\ServiceProfiles\\LocalService\\AppData\\Local\\Microsoft\\NGC", "delayBetweenCharsMs": 30},
+        {"type": "wait", "ms": 500},
+        {"type": "key", "key": "ENTER", "modifier": null},
+        {"type": "wait", "ms": 3000},
+        {"type": "string", "value": "exit", "delayBetweenCharsMs": 40},
+        {"type": "wait", "ms": 300},
+        {"type": "key", "key": "ENTER", "modifier": null}
+      ],
+      "retryable": false,
+      "retryInstruction": null,
+      "criticalStep": true
+    }
+  ]
+}

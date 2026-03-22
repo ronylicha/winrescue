@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WinRescue</string>
+
+    <!-- Navigation / Tabs -->
+    <string name="tab_dashboard">Tableau de bord</string>
+    <string name="tab_win10">Windows 10</string>
+    <string name="tab_win11">Windows 11</string>
+    <string name="tab_linux">Linux</string>
+    <string name="badge_coming_soon">Bientot</string>
+
+    <!-- Home -->
+    <string name="search_placeholder">Rechercher un script\u2026</string>
+    <string name="scripts_count">%1$d script(s) disponible(s)</string>
+    <string name="no_script_match">Aucun script ne correspond a \"%1$s\"</string>
+    <string name="no_script_os">Aucun script disponible pour cet OS.</string>
+    <string name="root_not_available">Root non disponible. Les fonctions HID sont desactivees.</string>
+    <string name="root_ok_no_hid">Root OK mais /dev/hidg0 non trouve. Configurez le gadget USB HID.</string>
+
+    <!-- Dashboard KPIs -->
+    <string name="dashboard_title">Tableau de bord</string>
+    <string name="kpi_scripts">Scripts</string>
+    <string name="kpi_root">Root</string>
+    <string name="kpi_usb">USB</string>
+    <string name="kpi_categories">Categories</string>
+    <string name="kpi_value_ok">OK</string>
+    <string name="kpi_value_partial">Partiel</string>
+    <string name="kpi_value_no">Non</string>
+    <string name="kpi_value_ready">Pret</string>
+    <string name="kpi_value_checking">\u2026</string>
+    <string name="by_category">Par categorie</string>
+    <string name="by_system">Par systeme</string>
+    <string name="category_recovery">Recuperation</string>
+    <string name="category_admin">Administration</string>
+    <string name="category_repair">Reparation</string>
+    <string name="category_security">Securite</string>
+    <string name="category_network">Reseau</string>
+    <string name="category_diagnostic">Diagnostic</string>
+
+    <!-- Script Detail -->
+    <string name="launch_wizard">Lancer le wizard</string>
+    <string name="prerequisites">Prerequis</string>
+    <string name="steps_overview">Apercu des etapes</string>
+    <string name="parameters">Parametres</string>
+    <string name="prereq_usb_cable">Cable USB data (pas charge uniquement)</string>
+    <string name="prereq_root">Android avec acces root</string>
+    <string name="prereq_hid">Gadget HID configure (/dev/hidg0)</string>
+    <string name="root_hid_unavailable">Root/HID non disponible. Vous ne pouvez pas executer ce script.</string>
+    <string name="estimated_duration">~%1$d min</string>
+
+    <!-- Wizard -->
+    <string name="step_of">Etape %1$d/%2$d</string>
+    <string name="abandon">Abandonner</string>
+    <string name="abandon_confirm">Etes-vous sur de vouloir abandonner ?</string>
+    <string name="abandon_confirm_yes">Oui, abandonner</string>
+    <string name="abandon_confirm_no">Non, continuer</string>
+    <string name="sending_in_progress">Envoi en cours\u2026</string>
+    <string name="do_not_unplug">Ne debranchez pas le cable !</string>
+    <string name="emergency_cancel">Annulation d\'urgence</string>
+    <string name="yes_launch">Oui, lancer !</string>
+    <string name="no_need_help">Non, besoin d\'aide</string>
+    <string name="keystrokes_sent">Frappes envoyees !</string>
+    <string name="look_at_pc">Regardez l\'ecran du PC.</string>
+    <string name="yes_next_step">Oui, etape suivante</string>
+    <string name="no_retry">Non, reessayer</string>
+    <string name="help">Aide</string>
+
+    <!-- Success -->
+    <string name="success_title">Termine avec succes !</string>
+    <string name="back_to_home">Retour a l\'accueil</string>
+    <string name="relaunch_script">Relancer ce script</string>
+    <string name="next_step_label">Prochaine etape :</string>
+
+    <!-- Error -->
+    <string name="step_failed">Etape echouee</string>
+    <string name="possible_causes">Causes possibles</string>
+    <string name="solutions">Solutions</string>
+    <string name="retry_this_step">Reessayer cette etape</string>
+    <string name="previous_step">Etape precedente</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Parametres</string>
+    <string name="usb_hid_section">USB HID</string>
+    <string name="device_path">Chemin peripherique</string>
+    <string name="test_connection">Tester la connexion</string>
+    <string name="test_success">Connexion OK</string>
+    <string name="test_failure">Connexion echouee</string>
+    <string name="target_keyboard">Clavier cible</string>
+    <string name="timing_section">Timing</string>
+    <string name="keystroke_delay">Delai entre frappes</string>
+    <string name="step_delay">Delai inter-etapes</string>
+    <string name="display_section">Affichage</string>
+    <string name="preview_before_send">Apercu commandes avant envoi</string>
+    <string name="debug_mode">Mode debug (log frappes)</string>
+    <string name="language_section">Langue</string>
+    <string name="language_auto">Auto</string>
+    <string name="language_french">Francais</string>
+    <string name="language_english">Anglais</string>
+    <string name="about_section">A propos</string>
+    <string name="version_label">WinRescue v1.0.0</string>
+    <string name="personal_use_only">Usage strictement personnel</string>
+
+    <!-- Disclaimer -->
+    <string name="disclaimer_title">Usage legal uniquement</string>
+    <string name="disclaimer_body_1">WinRescue est concu pour la recuperation de vos propres systemes ou de systemes dont vous avez l\'autorisation explicite d\'intervenir.</string>
+    <string name="disclaimer_body_2">L\'utilisation de cet outil pour acceder a des systemes sans autorisation est illegale et punissable par la loi.</string>
+    <string name="disclaimer_body_3">L\'auteur decline toute responsabilite pour tout usage illicite.</string>
+    <string name="disclaimer_accept">J\'accepte</string>
+
+    <!-- Difficulty -->
+    <string name="difficulty_easy">Facile</string>
+    <string name="difficulty_medium">Moyen</string>
+    <string name="difficulty_advanced">Avance</string>
+
+    <!-- USB Status -->
+    <string name="usb_connected">USB : Connecte</string>
+    <string name="usb_connected_no_hid">USB : Connecte (HID non pret)</string>
+    <string name="usb_disconnected">USB : Non connecte</string>
+</resources>

@@ -368,7 +368,7 @@ refactor(root): extraire la logique SELinux dans une classe dediee
 
 ## Licence
 
-Ce projet est distribue sous la [licence MIT](LICENSE).
+Ce projet est distribue sous la [licence GPL-3.0](LICENSE).
 
 ---
 

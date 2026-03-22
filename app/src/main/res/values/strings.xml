@@ -1,4 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">WinRescue</string>
+
+    <!-- Navigation / Tabs -->
+    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_win10">Windows 10</string>
+    <string name="tab_win11">Windows 11</string>
+    <string name="tab_linux">Linux</string>
+    <string name="badge_coming_soon">Soon</string>
+
+    <!-- Home -->
+    <string name="search_placeholder">Search a script\u2026</string>
+    <string name="scripts_count">%1$d script(s) available</string>
+    <string name="no_script_match">No script matches \"%1$s\"</string>
+    <string name="no_script_os">No script available for this OS.</string>
+    <string name="root_not_available">Root not available. HID functions are disabled.</string>
+    <string name="root_ok_no_hid">Root OK but /dev/hidg0 not found. Configure the USB HID gadget.</string>
+
+    <!-- Dashboard KPIs -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="kpi_scripts">Scripts</string>
+    <string name="kpi_root">Root</string>
+    <string name="kpi_usb">USB</string>
+    <string name="kpi_categories">Categories</string>
+    <string name="kpi_value_ok">OK</string>
+    <string name="kpi_value_partial">Partial</string>
+    <string name="kpi_value_no">No</string>
+    <string name="kpi_value_ready">Ready</string>
+    <string name="kpi_value_checking">\u2026</string>
+    <string name="by_category">By category</string>
+    <string name="by_system">By system</string>
+    <string name="category_recovery">Recovery</string>
+    <string name="category_admin">Administration</string>
+    <string name="category_repair">Repair</string>
+    <string name="category_security">Security</string>
+    <string name="category_network">Network</string>
+    <string name="category_diagnostic">Diagnostic</string>
+
+    <!-- Script Detail -->
+    <string name="launch_wizard">Launch wizard</string>
+    <string name="prerequisites">Prerequisites</string>
+    <string name="steps_overview">Steps overview</string>
+    <string name="parameters">Parameters</string>
+    <string name="prereq_usb_cable">USB data cable (not charge only)</string>
+    <string name="prereq_root">Android with root access</string>
+    <string name="prereq_hid">HID gadget configured (/dev/hidg0)</string>
+    <string name="root_hid_unavailable">Root/HID not available. You cannot run this script.</string>
+    <string name="estimated_duration">~%1$d min</string>
+
+    <!-- Wizard -->
+    <string name="step_of">Step %1$d/%2$d</string>
+    <string name="abandon">Abandon</string>
+    <string name="abandon_confirm">Are you sure you want to abandon?</string>
+    <string name="abandon_confirm_yes">Yes, abandon</string>
+    <string name="abandon_confirm_no">No, continue</string>
+    <string name="sending_in_progress">Sending in progress\u2026</string>
+    <string name="do_not_unplug">Do not unplug the cable!</string>
+    <string name="emergency_cancel">Emergency cancel</string>
+    <string name="yes_launch">Yes, launch!</string>
+    <string name="no_need_help">No, need help</string>
+    <string name="keystrokes_sent">Keystrokes sent!</string>
+    <string name="look_at_pc">Look at the PC screen.</string>
+    <string name="yes_next_step">Yes, next step</string>
+    <string name="no_retry">No, retry</string>
+    <string name="help">Help</string>
+
+    <!-- Success -->
+    <string name="success_title">Completed successfully!</string>
+    <string name="back_to_home">Back to home</string>
+    <string name="relaunch_script">Relaunch this script</string>
+    <string name="next_step_label">Next step:</string>
+
+    <!-- Error -->
+    <string name="step_failed">Step failed</string>
+    <string name="possible_causes">Possible causes</string>
+    <string name="solutions">Solutions</string>
+    <string name="retry_this_step">Retry this step</string>
+    <string name="previous_step">Previous step</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="usb_hid_section">USB HID</string>
+    <string name="device_path">Device path</string>
+    <string name="test_connection">Test connection</string>
+    <string name="test_success">Connection OK</string>
+    <string name="test_failure">Connection failed</string>
+    <string name="target_keyboard">Target keyboard</string>
+    <string name="timing_section">Timing</string>
+    <string name="keystroke_delay">Keystroke delay</string>
+    <string name="step_delay">Inter-step delay</string>
+    <string name="display_section">Display</string>
+    <string name="preview_before_send">Preview commands before sending</string>
+    <string name="debug_mode">Debug mode (log keystrokes)</string>
+    <string name="language_section">Language</string>
+    <string name="language_auto">Auto</string>
+    <string name="language_french">French</string>
+    <string name="language_english">English</string>
+    <string name="about_section">About</string>
+    <string name="version_label">WinRescue v1.0.0</string>
+    <string name="personal_use_only">Strictly personal use</string>
+
+    <!-- Disclaimer -->
+    <string name="disclaimer_title">Legal use only</string>
+    <string name="disclaimer_body_1">WinRescue is designed for recovering your own systems or systems for which you have explicit authorization to intervene.</string>
+    <string name="disclaimer_body_2">Using this tool to access systems without authorization is illegal and punishable by law.</string>
+    <string name="disclaimer_body_3">The author disclaims all responsibility for any illicit use.</string>
+    <string name="disclaimer_accept">I accept</string>
+
+    <!-- Difficulty -->
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_advanced">Advanced</string>
+
+    <!-- USB Status -->
+    <string name="usb_connected">USB: Connected</string>
+    <string name="usb_connected_no_hid">USB: Connected (HID not ready)</string>
+    <string name="usb_disconnected">USB: Disconnected</string>
 </resources>

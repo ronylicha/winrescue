@@ -31,6 +31,7 @@ class SettingsRepositoryImpl @Inject constructor(
         val DARK_THEME = booleanPreferencesKey("dark_theme")
         val PREVIEW_BEFORE_SEND = booleanPreferencesKey("preview_before_send")
         val DEBUG_MODE = booleanPreferencesKey("debug_mode")
+        val LANGUAGE = stringPreferencesKey("language")
         val DISCLAIMER_ACCEPTED = booleanPreferencesKey("disclaimer_accepted")
         val DISCLAIMER_TIMESTAMP = longPreferencesKey("disclaimer_timestamp")
     }
@@ -50,6 +51,7 @@ class SettingsRepositoryImpl @Inject constructor(
             darkTheme = prefs[Keys.DARK_THEME] ?: true,
             previewBeforeSend = prefs[Keys.PREVIEW_BEFORE_SEND] ?: true,
             debugMode = prefs[Keys.DEBUG_MODE] ?: false,
+            language = prefs[Keys.LANGUAGE] ?: "auto",
             disclaimerAccepted = prefs[Keys.DISCLAIMER_ACCEPTED] ?: false,
             disclaimerTimestamp = prefs[Keys.DISCLAIMER_TIMESTAMP] ?: 0L
         )
@@ -77,6 +79,10 @@ class SettingsRepositoryImpl @Inject constructor(
 
     override suspend fun updateHidDevicePath(path: String) {
         context.dataStore.edit { it[Keys.HID_DEVICE_PATH] = path }
+    }
+
+    override suspend fun updateLanguage(language: String) {
+        context.dataStore.edit { it[Keys.LANGUAGE] = language }
     }
 
     override suspend fun acceptDisclaimer() {

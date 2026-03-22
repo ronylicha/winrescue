@@ -11,6 +11,7 @@ interface SettingsRepository {
     suspend fun updatePreviewBeforeSend(enabled: Boolean)
     suspend fun updateDebugMode(enabled: Boolean)
     suspend fun updateHidDevicePath(path: String)
+    suspend fun updateLanguage(language: String)
     suspend fun acceptDisclaimer()
     suspend fun isDisclaimerAccepted(): Boolean
 }

@@ -10,6 +10,7 @@ data class AppSettings(
     val darkTheme: Boolean = true,
     val previewBeforeSend: Boolean = true,
     val debugMode: Boolean = false,
+    val language: String = "auto",  // "auto", "fr", "en"
     val disclaimerAccepted: Boolean = false,
     val disclaimerTimestamp: Long = 0L
 )

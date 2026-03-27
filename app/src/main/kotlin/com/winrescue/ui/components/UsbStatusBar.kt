@@ -66,7 +66,7 @@ fun UsbStatusBar(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun UsbStatusBarConnectedPreview() {
     WinRescueTheme {
@@ -74,7 +74,7 @@ private fun UsbStatusBarConnectedPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun UsbStatusBarNoHidPreview() {
     WinRescueTheme {
@@ -82,7 +82,7 @@ private fun UsbStatusBarNoHidPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun UsbStatusBarDisconnectedPreview() {
     WinRescueTheme {

@@ -174,7 +174,7 @@ private fun StepLine(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun StepIndicatorStartPreview() {
     WinRescueTheme {
@@ -186,7 +186,7 @@ private fun StepIndicatorStartPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun StepIndicatorMiddlePreview() {
     WinRescueTheme {
@@ -198,7 +198,7 @@ private fun StepIndicatorMiddlePreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun StepIndicatorEndPreview() {
     WinRescueTheme {

@@ -82,7 +82,6 @@ import com.winrescue.data.root.RootState
 import com.winrescue.ui.components.DifficultyBadge
 import com.winrescue.ui.components.WarningBanner
 import com.winrescue.ui.navigation.Route
-import com.winrescue.ui.theme.Primary
 import com.winrescue.ui.theme.WinRescueTheme
 import com.winrescue.ui.viewmodel.HomeViewModel
 
@@ -211,7 +210,7 @@ fun ScriptDetailContent(
                     Icon(
                         imageVector = getIconForScript(script.icon),
                         contentDescription = null,
-                        tint = Primary,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(48.dp)
                     )
 
@@ -552,7 +551,7 @@ private val previewScript = Script(
     steps = previewSteps
 )
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun ScriptDetailReadyPreview() {
     WinRescueTheme {
@@ -570,7 +569,7 @@ private fun ScriptDetailReadyPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun ScriptDetailNoRootPreview() {
     WinRescueTheme {
@@ -585,7 +584,7 @@ private fun ScriptDetailNoRootPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun ScriptDetailNoFieldsPreview() {
     WinRescueTheme {
@@ -603,7 +602,7 @@ private fun ScriptDetailNoFieldsPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun ScriptDetailEmptyFieldsPreview() {
     WinRescueTheme {

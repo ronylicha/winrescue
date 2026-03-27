@@ -50,7 +50,7 @@ fun difficultyColor(difficulty: Difficulty): Color = when (difficulty) {
     Difficulty.ADVANCED -> DifficultyAdvanced
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun DifficultyBadgeEasyPreview() {
     WinRescueTheme {
@@ -58,7 +58,7 @@ private fun DifficultyBadgeEasyPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun DifficultyBadgeMediumPreview() {
     WinRescueTheme {
@@ -66,7 +66,7 @@ private fun DifficultyBadgeMediumPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun DifficultyBadgeAdvancedPreview() {
     WinRescueTheme {

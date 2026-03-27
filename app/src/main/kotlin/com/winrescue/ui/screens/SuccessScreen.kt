@@ -218,7 +218,7 @@ private fun SuccessScreenContent(
 
 // region Previews
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun SuccessScreenPreview() {
     WinRescueTheme {
@@ -231,7 +231,7 @@ private fun SuccessScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun SuccessScreenGenericPreview() {
     WinRescueTheme {

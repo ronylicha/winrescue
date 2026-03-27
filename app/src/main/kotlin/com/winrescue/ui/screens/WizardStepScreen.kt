@@ -55,12 +55,8 @@ import com.winrescue.ui.components.StepIndicator
 import com.winrescue.ui.components.WarningBanner
 import com.winrescue.ui.navigation.Route
 import com.winrescue.ui.theme.JetBrainsMono
-import com.winrescue.ui.theme.Primary
-import com.winrescue.ui.theme.SurfaceVariant
-import com.winrescue.ui.theme.Tertiary
 import com.winrescue.ui.viewmodel.StepState
 import com.winrescue.ui.viewmodel.WizardViewModel
-import com.winrescue.ui.theme.Error as ErrorColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,7 +136,7 @@ fun WizardStepScreen(
                             ) {
                                 Text(
                                     text = "Abandonner",
-                                    color = ErrorColor
+                                    color = MaterialTheme.colorScheme.error
                                 )
                             }
                         },
@@ -294,7 +290,7 @@ private fun WaitingConfirmContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Icon(
                 imageVector = Icons.Default.Send,
@@ -353,7 +349,7 @@ private fun SendingContent(
             imageVector = Icons.Default.Keyboard,
             contentDescription = "Envoi HID",
             modifier = Modifier.size(64.dp),
-            tint = Primary
+            tint = MaterialTheme.colorScheme.primary
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -385,8 +381,8 @@ private fun SendingContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp),
-            color = Primary,
-            trackColor = SurfaceVariant
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.surfaceVariant
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -410,8 +406,8 @@ private fun SendingContent(
         OutlinedButton(
             onClick = onCancelSending,
             modifier = Modifier.height(48.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = ErrorColor),
-            border = BorderStroke(1.dp, ErrorColor)
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
         ) {
             Icon(
                 imageVector = Icons.Default.Cancel,
@@ -461,7 +457,7 @@ private fun WaitingResultContent(
         Icon(
             imageVector = Icons.Default.CheckCircle,
             contentDescription = "Frappes envoyees",
-            tint = Tertiary,
+            tint = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier
                 .size(48.dp)
                 .align(Alignment.CenterHorizontally)
@@ -506,7 +502,7 @@ private fun WaitingResultContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Primary)
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Icon(
                 imageVector = Icons.Default.Check,
@@ -598,7 +594,7 @@ private fun ErrorContent(
         Icon(
             imageVector = Icons.Default.Cancel,
             contentDescription = "Erreur",
-            tint = ErrorColor,
+            tint = MaterialTheme.colorScheme.error,
             modifier = Modifier
                 .size(48.dp)
                 .align(Alignment.CenterHorizontally)
@@ -609,7 +605,7 @@ private fun ErrorContent(
         Text(
             text = "Erreur",
             style = MaterialTheme.typography.titleLarge,
-            color = ErrorColor,
+            color = MaterialTheme.colorScheme.error,
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
@@ -638,7 +634,7 @@ private fun ErrorContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(56.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Primary)
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Icon(
                     imageVector = Icons.Default.Refresh,
@@ -660,8 +656,8 @@ private fun ErrorContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = ErrorColor),
-            border = BorderStroke(1.dp, ErrorColor)
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
         ) {
             Text(
                 text = "Abandonner",
@@ -683,7 +679,7 @@ private fun LoadingContent(modifier: Modifier = Modifier) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             androidx.compose.material3.CircularProgressIndicator(
-                color = Primary,
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.size(48.dp)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -724,7 +720,7 @@ private fun AbandonDialog(
             TextButton(onClick = onConfirm) {
                 Text(
                     text = "Oui, abandonner",
-                    color = ErrorColor
+                    color = MaterialTheme.colorScheme.error
                 )
             }
         },

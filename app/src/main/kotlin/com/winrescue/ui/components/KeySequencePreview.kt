@@ -27,10 +27,10 @@ import com.winrescue.ui.theme.StepActive
 import com.winrescue.ui.theme.Warning
 import com.winrescue.ui.theme.WinRescueTheme
 
-private val TerminalBackground = Color(0xFF0A0F1A)
-private val TerminalGreen = Color(0xFF22C55E)
-private val TerminalPrompt = Color(0xFF3B82F6)
-private val TerminalComment = Color(0xFF6B7280)
+private val TerminalBackground = Color(0xFF060A14)
+private val TerminalGreen = Color(0xFF69F0AE)
+private val TerminalPrompt = Color(0xFF00E5FF)
+private val TerminalComment = Color(0xFF4A5568)
 
 @Composable
 fun KeySequencePreview(
@@ -162,7 +162,7 @@ private fun resolveTemplate(template: String, inputs: Map<String, String>): Stri
     return resolved
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun KeySequencePreviewDemo() {
     WinRescueTheme {
@@ -188,7 +188,7 @@ private fun KeySequencePreviewDemo() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun KeySequencePreviewEmptyPreview() {
     WinRescueTheme {

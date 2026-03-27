@@ -83,7 +83,7 @@ private fun OsFilterChip(
     )
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun OsSelectorWin10Preview() {
     WinRescueTheme {
@@ -94,7 +94,7 @@ private fun OsSelectorWin10Preview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun OsSelectorWin11Preview() {
     WinRescueTheme {

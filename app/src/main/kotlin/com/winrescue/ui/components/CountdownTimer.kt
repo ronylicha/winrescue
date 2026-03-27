@@ -78,7 +78,7 @@ fun CountdownTimer(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun CountdownTimerFullPreview() {
     WinRescueTheme {
@@ -91,7 +91,7 @@ private fun CountdownTimerFullPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun CountdownTimerHalfPreview() {
     WinRescueTheme {
@@ -104,7 +104,7 @@ private fun CountdownTimerHalfPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18)
 @Composable
 private fun CountdownTimerLongPreview() {
     WinRescueTheme {

@@ -547,7 +547,7 @@ private fun SwitchSetting(
 
 // region Previews
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun SettingsScreenPreview() {
     WinRescueTheme {
@@ -567,7 +567,7 @@ private fun SettingsScreenPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun SettingsScreenTestSuccessPreview() {
     WinRescueTheme {
@@ -593,7 +593,7 @@ private fun SettingsScreenTestSuccessPreview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun SettingsScreenTestFailedPreview() {
     WinRescueTheme {

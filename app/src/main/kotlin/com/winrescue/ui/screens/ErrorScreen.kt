@@ -359,7 +359,7 @@ private fun BulletItem(
 
 // region Previews
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun ErrorScreenStep0Preview() {
     WinRescueTheme {
@@ -387,7 +387,7 @@ private fun ErrorScreenStep0Preview() {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFF0F172A, showSystemUi = true)
+@Preview(showBackground = true, backgroundColor = 0xFF080C18, showSystemUi = true)
 @Composable
 private fun ErrorScreenStep2Preview() {
     WinRescueTheme {

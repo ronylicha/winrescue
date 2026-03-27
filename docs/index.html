@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WinRescue — Recovery Tool</title>
+  <meta name="description" content="Transformez votre smartphone Android rooté en outil de récupération universel via USB HID.">
+  <meta name="theme-color" content="#080C18">
+  <meta property="og:title" content="WinRescue">
+  <meta property="og:description" content="Android-powered Windows recovery tool via USB HID keyboard emulation.">
+  <meta property="og:image" content="assets/winrescue-logo-512.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/winrescue-logo-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ═══════════ NAVBAR ═══════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo">
+        <img src="assets/winrescue-logo-512.png" alt="WinRescue" width="36" height="36">
+        <span>WinRescue</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#features" data-i18n="nav.features">Fonctionnalites</a>
+        <a href="#how-it-works" data-i18n="nav.howItWorks">Comment ca marche</a>
+        <a href="#scripts" data-i18n="nav.scripts">Scripts</a>
+        <a href="#requirements" data-i18n="nav.requirements">Pre-requis</a>
+        <a href="#download" data-i18n="nav.download">Telecharger</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="lang-toggle" id="langToggle" aria-label="Switch language">
+          <span class="lang-flag" id="langFlag">EN</span>
+        </button>
+        <a href="https://github.com/ronylicha/winrescue" class="btn btn-outline btn-sm" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ═══════════ HERO ═══════════ -->
+    <section class="hero" id="hero">
+      <div class="hero-glow"></div>
+      <div class="container hero-grid">
+        <div class="hero-content" data-animate="fade-up">
+          <div class="hero-badge">
+            <span class="badge badge-cyan" data-i18n="hero.badge">Open Source &middot; GPL-3.0</span>
+          </div>
+          <h1 class="hero-title">
+            <span data-i18n="hero.title1">Votre smartphone Android</span><br>
+            <span class="text-gradient" data-i18n="hero.title2">devient un outil de recuperation</span>
+          </h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            WinRescue transforme votre Android roote en clavier USB virtuel pour reparer, recuperer et administrer n'importe quel PC Windows — sans cle USB bootable.
+          </p>
+          <div class="hero-actions">
+            <a href="#download" class="btn btn-primary btn-lg">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span data-i18n="hero.cta">Telecharger</span>
+            </a>
+            <a href="https://github.com/ronylicha/winrescue" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+              <span data-i18n="hero.source">Voir le code</span>
+            </a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-value">30+</span>
+              <span class="stat-label" data-i18n="hero.stat1">Scripts</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+              <span class="stat-value">2</span>
+              <span class="stat-label" data-i18n="hero.stat2">Plateformes</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat">
+              <span class="stat-value">0</span>
+              <span class="stat-label" data-i18n="hero.stat3">Cle USB requise</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual" data-animate="fade-left">
+          <div class="hero-phone-frame">
+            <img src="assets/winrescue-hero.png" alt="WinRescue Dashboard" class="hero-screenshot" loading="eager">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ FEATURES ═══════════ -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <span class="badge badge-magenta" data-i18n="features.badge">Fonctionnalites</span>
+          <h2 class="section-title" data-i18n="features.title">Tout ce dont vous avez besoin</h2>
+          <p class="section-subtitle" data-i18n="features.subtitle">
+            22 scripts Windows via USB HID + 8 scripts Android via shell root, guides par un wizard interactif.
+          </p>
+        </div>
+
+        <div class="features-grid" data-animate="fade-up">
+          <!-- Feature 1 -->
+          <div class="feature-card">
+            <div class="feature-icon icon-cyan">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3 data-i18n="features.f1.title">Windows Recovery</h3>
+            <p data-i18n="features.f1.desc">22 scripts pour reinitialiser mots de passe, reparer le boot, recuperer des fichiers, activer le mode sans echec et plus.</p>
+            <span class="feature-tag" data-i18n="features.f1.tag">Win10 &middot; Win11</span>
+          </div>
+
+          <!-- Feature 2 -->
+          <div class="feature-card">
+            <div class="feature-icon icon-green">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+            </div>
+            <h3 data-i18n="features.f2.title">Android Maintenance</h3>
+            <p data-i18n="features.f2.desc">8 scripts pour vider le cache, changer les DNS, desactiver le bloatware, calibrer la batterie et diagnostiquer le systeme.</p>
+            <span class="feature-tag tag-green" data-i18n="features.f2.tag">Shell root</span>
+          </div>
+
+          <!-- Feature 3 -->
+          <div class="feature-card">
+            <div class="feature-icon icon-magenta">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 data-i18n="features.f3.title">Wizard interactif</h3>
+            <p data-i18n="features.f3.desc">Guide step-by-step avec images d'aide, preview des commandes, barre de progression et confirmation a chaque etape.</p>
+            <span class="feature-tag tag-magenta" data-i18n="features.f3.tag">Step-by-step</span>
+          </div>
+
+          <!-- Feature 4 -->
+          <div class="feature-card">
+            <div class="feature-icon icon-cyan">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 2h10"/><path d="M5 6h14"/><rect x="3" y="10" width="18" height="12" rx="2"/></svg>
+            </div>
+            <h3 data-i18n="features.f4.title">USB HID natif</h3>
+            <p data-i18n="features.f4.desc">Emule un clavier physique via le protocole HID standard. Fonctionne meme sur l'ecran de login et dans WinRE.</p>
+            <span class="feature-tag" data-i18n="features.f4.tag">QWERTY &middot; AZERTY</span>
+          </div>
+
+          <!-- Feature 5 -->
+          <div class="feature-card">
+            <div class="feature-icon icon-green">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            </div>
+            <h3 data-i18n="features.f5.title">Dashboard KPI</h3>
+            <p data-i18n="features.f5.desc">Vue d'ensemble avec statut root, connexion USB, nombre de scripts par categorie et filtres par OS.</p>
+            <span class="feature-tag tag-green" data-i18n="features.f5.tag">Temps reel</span>
+          </div>
+
+          <!-- Feature 6 -->
+          <div class="feature-card">
+            <div class="feature-icon icon-magenta">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+            </div>
+            <h3 data-i18n="features.f6.title">Bilingue FR/EN</h3>
+            <p data-i18n="features.f6.desc">Interface complete en francais et anglais. Detecte automatiquement la langue du systeme ou laisse le choix dans les parametres.</p>
+            <span class="feature-tag tag-magenta" data-i18n="features.f6.tag">i18n</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ HOW IT WORKS ═══════════ -->
+    <section class="section section-alt" id="how-it-works">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <span class="badge badge-green" data-i18n="how.badge">Simple</span>
+          <h2 class="section-title" data-i18n="how.title">Comment ca marche</h2>
+          <p class="section-subtitle" data-i18n="how.subtitle">
+            Trois etapes pour recuperer n'importe quel PC Windows.
+          </p>
+        </div>
+
+        <div class="steps-grid" data-animate="fade-up">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="step-icon icon-cyan">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <h3 data-i18n="how.step1.title">Branchez</h3>
+            <p data-i18n="how.step1.desc">Connectez votre Android au PC cible via un cable USB-C OTG. WinRescue detecte automatiquement la connexion.</p>
+          </div>
+
+          <div class="step-connector">
+            <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--outline)" stroke-width="2" stroke-dasharray="4 4"/></svg>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="step-icon icon-magenta">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+            </div>
+            <h3 data-i18n="how.step2.title">Selectionnez</h3>
+            <p data-i18n="how.step2.desc">Choisissez le script adapte a votre situation : reset mot de passe, reparation boot, recuperation fichiers...</p>
+          </div>
+
+          <div class="step-connector">
+            <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--outline)" stroke-width="2" stroke-dasharray="4 4"/></svg>
+          </div>
+
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="step-icon icon-green">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3 data-i18n="how.step3.title">Executez</h3>
+            <p data-i18n="how.step3.desc">Le wizard vous guide etape par etape. WinRescue envoie les frappes clavier automatiquement au PC.</p>
+          </div>
+        </div>
+
+        <div class="hid-flow" data-animate="fade-up">
+          <img src="assets/winrescue-hid-flow.png" alt="HID Flow Diagram" class="hid-flow-img" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ SCRIPTS ═══════════ -->
+    <section class="section" id="scripts">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <span class="badge badge-cyan" data-i18n="scripts.badge">30+ scripts</span>
+          <h2 class="section-title" data-i18n="scripts.title">Scripts disponibles</h2>
+        </div>
+
+        <div class="scripts-tabs" data-animate="fade-up">
+          <button class="tab-btn active" data-tab="windows">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/></svg>
+            Windows
+          </button>
+          <button class="tab-btn" data-tab="android">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.341a1.015 1.015 0 01-1.016-1.016A1.015 1.015 0 0117.523 13.31a1.015 1.015 0 011.015 1.015 1.015 1.015 0 01-1.015 1.016m-11.046 0a1.015 1.015 0 01-1.016-1.016A1.015 1.015 0 016.477 13.31a1.015 1.015 0 011.015 1.015 1.015 1.015 0 01-1.015 1.016m11.405-6.02l1.96-3.393a.408.408 0 00-.148-.557.408.408 0 00-.557.148l-1.986 3.44a12.083 12.083 0 00-5.128-1.126 12.083 12.083 0 00-5.128 1.126L5.346 5.519a.408.408 0 00-.557-.148.408.408 0 00-.148.557l1.96 3.393C2.688 11.41.343 15.164.023 19.5h23.954c-.32-4.336-2.665-8.09-6.095-10.179"/></svg>
+            Android
+          </button>
+        </div>
+
+        <div class="scripts-content" data-animate="fade-up">
+          <!-- Windows scripts -->
+          <div class="tab-panel active" id="tab-windows">
+            <div class="scripts-grid">
+              <div class="script-item">
+                <div class="script-icon icon-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w1">Reset mot de passe</h4>
+                  <span class="script-meta">Win10 / Win11 &middot; <span data-i18n="scripts.medium">Moyen</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w2">Reset PIN Windows Hello</h4>
+                  <span class="script-meta">Win11 &middot; <span data-i18n="scripts.easy">Facile</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w3">Recuperation fichiers</h4>
+                  <span class="script-meta">Win10 / Win11 &middot; <span data-i18n="scripts.medium">Moyen</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-magenta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0118.8-4.3M22 12.5a10 10 0 01-18.8 4.2"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w4">Reinitialisation usine</h4>
+                  <span class="script-meta">Win10 / Win11 &middot; <span data-i18n="scripts.advanced">Avance</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w5">Creation compte admin</h4>
+                  <span class="script-meta">Win10 / Win11 &middot; <span data-i18n="scripts.medium">Moyen</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w6">Reparation boot MBR/BCD</h4>
+                  <span class="script-meta">Win10 / Win11 &middot; <span data-i18n="scripts.advanced">Avance</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w7">Reparation SFC/DISM</h4>
+                  <span class="script-meta">Win10 + Win11 &middot; <span data-i18n="scripts.medium">Moyen</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-magenta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.w8">Mode sans echec + 15 autres</h4>
+                  <span class="script-meta">Win10 / Win11 &middot; <span data-i18n="scripts.mixed">Mix</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Android scripts -->
+          <div class="tab-panel" id="tab-android">
+            <div class="scripts-grid">
+              <div class="script-item">
+                <div class="script-icon icon-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.a1">Vider le cache</h4>
+                  <span class="script-meta">pm trim-caches &middot; <span data-i18n="scripts.easy">Facile</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0114.08 0"/><path d="M1.42 9a16 16 0 0121.16 0"/><path d="M8.53 16.11a6 6 0 016.95 0"/><line x1="12" y1="20" x2="12" y2="20.01"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.a2">Reset WiFi/Bluetooth</h4>
+                  <span class="script-meta"><span data-i18n="scripts.easy">Facile</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-magenta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="6" width="22" height="12" rx="2"/><line x1="6" y1="10" x2="6" y2="14"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.a3">Calibrer la batterie</h4>
+                  <span class="script-meta"><span data-i18n="scripts.easy">Facile</span></span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-cyan"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.a4">Changer les DNS</h4>
+                  <span class="script-meta">Cloudflare / Google / Quad9</span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.a5">Diagnostic systeme</h4>
+                  <span class="script-meta">CPU / RAM / Stockage / Batterie</span>
+                </div>
+              </div>
+              <div class="script-item">
+                <div class="script-icon icon-magenta"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 11-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg></div>
+                <div>
+                  <h4 data-i18n="scripts.a6">Desactiver bloatware + 2 autres</h4>
+                  <span class="script-meta"><span data-i18n="scripts.medium">Moyen</span></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ REQUIREMENTS ═══════════ -->
+    <section class="section section-alt" id="requirements">
+      <div class="container">
+        <div class="section-header" data-animate="fade-up">
+          <span class="badge badge-magenta" data-i18n="req.badge">Configuration</span>
+          <h2 class="section-title" data-i18n="req.title">Pre-requis</h2>
+        </div>
+
+        <div class="req-grid" data-animate="fade-up">
+          <div class="req-card">
+            <div class="req-icon icon-cyan">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18.01"/></svg>
+            </div>
+            <h4>Android 8.0+</h4>
+            <p data-i18n="req.android">API 26 minimum. Teste sur Unihertz Titan 2, Google Pixel, OnePlus.</p>
+          </div>
+          <div class="req-card">
+            <div class="req-icon icon-magenta">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h4>Root (Magisk/KernelSU)</h4>
+            <p data-i18n="req.root">Necessaire pour creer le peripherique USB HID virtuel (/dev/hidg0) via configfs.</p>
+          </div>
+          <div class="req-card">
+            <div class="req-icon icon-green">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            </div>
+            <h4 data-i18n="req.kernel">Kernel HID</h4>
+            <p data-i18n="req.kernelDesc">CONFIG_USB_CONFIGFS_F_HID=y compile dans le kernel ou module libcomposite.</p>
+          </div>
+          <div class="req-card">
+            <div class="req-icon icon-cyan">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v6m0 12v2M4.93 4.93l4.24 4.24m5.66 5.66l4.24 4.24M2 12h6m8 0h6M4.93 19.07l4.24-4.24m5.66-5.66l4.24-4.24"/></svg>
+            </div>
+            <h4 data-i18n="req.cable">Cable USB-C OTG</h4>
+            <p data-i18n="req.cableDesc">Cable de donnees (pas charge uniquement). USB-C vers USB-A ou USB-C vers USB-C.</p>
+          </div>
+        </div>
+
+        <div class="req-warning" data-animate="fade-up">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span data-i18n="req.warning">Non compatible : Samsung (TEE whitelist), Xiaomi (configfs restrictif), Huawei (bootloader verrouille).</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ DOWNLOAD ═══════════ -->
+    <section class="section" id="download">
+      <div class="container">
+        <div class="download-card" data-animate="fade-up">
+          <div class="download-content">
+            <h2 class="section-title" data-i18n="dl.title">Pret a recuperer ?</h2>
+            <p class="section-subtitle" data-i18n="dl.subtitle">
+              Clonez le depot, buildez et installez en quelques minutes.
+            </p>
+
+            <div class="code-block">
+              <div class="code-header">
+                <span class="code-dot red"></span>
+                <span class="code-dot yellow"></span>
+                <span class="code-dot green"></span>
+                <span class="code-title">Terminal</span>
+              </div>
+              <pre><code><span class="code-comment"># Clone</span>
+<span class="code-prompt">$</span> git clone https://github.com/ronylicha/winrescue.git
+<span class="code-prompt">$</span> cd winrescue
+
+<span class="code-comment"># Build & Install</span>
+<span class="code-prompt">$</span> ./gradlew assembleDebug
+<span class="code-prompt">$</span> adb install app/build/outputs/apk/debug/app-debug.apk</code></pre>
+            </div>
+
+            <div class="download-actions">
+              <a href="https://github.com/ronylicha/winrescue" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                <span data-i18n="dl.github">Voir sur GitHub</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════ FOOTER ═══════════ -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <img src="assets/winrescue-logo-512.png" alt="WinRescue" width="32" height="32">
+        <span>WinRescue</span>
+      </div>
+      <p class="footer-legal" data-i18n="footer.legal">
+        Usage legal uniquement. L'auteur decline toute responsabilite pour tout usage illicite.
+      </p>
+      <p class="footer-copy">
+        &copy; 2026 Rony Licha &middot; <a href="https://github.com/ronylicha/winrescue/blob/main/LICENSE">GPL-3.0</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
